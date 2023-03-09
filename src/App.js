@@ -11,20 +11,20 @@ import Login from './pages/Login/Login';
 import History from './pages/History/History';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer'
-
+import Layout from './components/Layout/Layout'
 function App() {
   return (
     <div >
-   <Header/>
+ 
        <Router>        
                  <Routes>
-                 <Route exact path='/' element={< Login />}></Route>
+                 <Route exact path='/' element={< Layout />}></Route>
                  <Route exact path='/dashboard' element={< Dashboard />}></Route>
                  <Route exact path='/contact' element={< history />}></Route>
           </Routes>
       
        </Router>
-<Footer/>
+
 </div>
 );
   

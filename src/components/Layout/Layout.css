@@ -1,0 +1,10 @@
+.layout {
+    position: absolute;
+    top: 10;
+    left: 0;     
+    width: 100%;
+    text-align: center;
+    background-color: rgb(255, 229, 153);
+    color: white;
+  }
+  

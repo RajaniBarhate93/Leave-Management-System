@@ -2,9 +2,11 @@
     position: absolute;
     top: 0;
     left: 0;
+        height: 10%;
+ 
     width: 100%;
     text-align: center;
-    background-color: purple;
+    background-color: rgb(231, 235, 11);
     color: white;
   }
   
