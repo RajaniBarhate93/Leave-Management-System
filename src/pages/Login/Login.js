@@ -35,16 +35,16 @@ const Login = ({ setUserState }) => {
     }
     return error;
   };
-  const cancelHandler = (e)=>{
+  const cancelHandler = (e) => {
 
   }
   const loginHandler = (e) => {
- 
+
     e.preventDefault();
     setFormErrors(validateForm(user));
     setIsSubmit(true);
     if (!formErrors) {
-alert("Please try again.....")
+      alert("Please try again.....")
     }
     if(isSubmit){
       navigate("/dashboard");
@@ -52,13 +52,13 @@ alert("Please try again.....")
     }
   };
 
-  return(
+  return (
 
-<div className="login">
+    <div className="login">
       <form>
-      <h1 className='h1T'><u>Leave Management System</u></h1>
-      <br/>
-      <h2 className='h2T'>Login Screen</h2>
+        <h1 className='h1T'><u>Leave Management System</u></h1>
+        <br />
+        <h2 className='h2T'>Login Screen</h2>
         <input
           type="email"
           name="email"
@@ -78,12 +78,12 @@ alert("Please try again.....")
         />
         <p className="error">{formErrors.password}</p>
         <div className='btn_container'>
-        <button className="button_common" onClick={loginHandler}>
-          Login
-        </button>
-        <button className="button_common" onClick={cancelHandler}>
-         Cancel
-        </button>
+          <button className="button_common" onClick={loginHandler}>
+            Login
+          </button>
+          <button className="button_common" onClick={cancelHandler}>
+            Cancel
+          </button>
         </div>
       </form>
       <NavLink to="/signup">Not yet registered? Register Now</NavLink>
@@ -92,6 +92,6 @@ alert("Please try again.....")
 };
 
 export default Login;
-  
+
 
 
