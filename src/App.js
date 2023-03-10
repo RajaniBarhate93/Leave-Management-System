@@ -12,6 +12,8 @@ import History from './pages/History/History';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer'
 import Layout from './components/Layout/Layout'
+import Approval from './pages/Approval/Approval'
+
 function App() {
   return (
     <div >
@@ -21,6 +23,7 @@ function App() {
                  <Route exact path='/' element={< Layout />}></Route>
                  <Route exact path='/dashboard' element={< Dashboard />}></Route>
                  <Route exact path='/contact' element={< history />}></Route>
+                 <Route exact path='/approval' element={< Approval />}></Route>
           </Routes>
       
        </Router>
