@@ -2,7 +2,7 @@ import React from 'react';
 import "./Approval.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
-const options1 = ['Privilege Leave', 'Casual Leave ', 'Sick Leave', 'Maternity Leave', 'Paternity Leave.'];
+import { Link } from 'react-router-dom';
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
 { id: 5, name: "Paternity Leave" }];
@@ -129,7 +129,8 @@ class Approval extends React.Component {
                         </div>
 
                         <div style={{ marginTop: "2%" }}>
-                            <button className='btn_common' >Apply</button>
+                        <button className='btn_common' ><Link to='/records'>Approve</Link></button>
+                            {/* <button className='btn_common' >Approve</button> */}
                             <button className='btn_common' >Reject</button>
                             <button className='btn_common' >Cancel</button>
                         </div>
