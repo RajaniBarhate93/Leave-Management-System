@@ -8,11 +8,12 @@ import {
 } from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Login/Login';
-import History from './pages/History/History';
+import Records from './pages/Records/Records';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer'
 import Layout from './components/Layout/Layout'
 import Approval from './pages/Approval/Approval'
+import TableComponent from './components/TableComponent';
 
 function App() {
   return (
@@ -20,10 +21,11 @@ function App() {
  
        <Router>        
                  <Routes>
-                 <Route exact path='/' element={< Layout />}></Route>
-                 <Route exact path='/dashboard' element={< Dashboard />}></Route>
-                 <Route exact path='/contact' element={< history />}></Route>
-                 <Route exact path='/approval' element={< Approval />}></Route>
+                 <Route exact={true} path='/' element={< Layout />}></Route>
+                 <Route exact={true} path='/dashboard' element={< Dashboard />}></Route>
+                 <Route exact={true} path='/records' element={< Records />}></Route>
+                 <Route exact={true} path='/approval' element={< Approval />}></Route>
+                 <Route exact={true} path='/table' element={< TableComponent />}></Route>
           </Routes>
       
        </Router>

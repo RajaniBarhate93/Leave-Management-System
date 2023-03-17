@@ -10,8 +10,8 @@ const Login = ({ setUserState }) => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [user, setUserDetails] = useState({
-    email: "",
-    password: "",
+    email: "blackpanther@gmail.com",
+    password: "admin@1234",
   });
 
 
@@ -49,6 +49,7 @@ const Login = ({ setUserState }) => {
     if(isSubmit){
       navigate("/dashboard");
      // <NavLink to="/dashboard"/>
+     
     }
   };
 

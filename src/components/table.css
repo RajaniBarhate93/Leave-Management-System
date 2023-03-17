@@ -1,0 +1,12 @@
+.infoContainer {
+    padding-left: 15px;
+    padding-bottom: 40px;
+  }
+  .btn{
+    background-color: rgb(242, 204, 143);
+    color: #1d2129;
+     border-radius: 5px;
+     margin: 0.3rem;
+
+  }
+  table td, table th { padding: 10px; }
