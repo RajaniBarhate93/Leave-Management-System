@@ -4,6 +4,7 @@ import "./Records.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
 import TableComponent from '../../components/TableComponent';
+import { Link, Redirect } from "react-router-dom"
 const checkList = ["Apple", "Banana", "Tea", "Coffee"];
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
@@ -18,17 +19,17 @@ var tableData = [
     
    }, {
     id: 2,
-     'LeaveType': 'Privilege',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-   },{
+    'LeaveType': 'Privilege',
+    'From': '10th Feb 2023',
+    'To': '10th Feb 2023',
+    'Action': ""
+  }, {
     id: 3,
-     'LeaveType': 'Privilege',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-   }, {
+    'LeaveType': 'Privilege',
+    'From': '10th Feb 2023',
+    'To': '10th Feb 2023',
+    'Action': ""
+  }, {
     id: 4,
      'LeaveType': 'Maternity',
      'From': '10th Feb 2023',
@@ -114,15 +115,15 @@ var tableData = [
               </div>
             </div>
 
-         
-            <div style={{ marginTop: "2%",marginBottom:"2%"}}>
+
+            <div style={{ marginTop: "2%", marginBottom: "2%" }}>
               <button className='btn_common' >Search</button>
               <button className='btn_common' >Cancel</button>
               <button className='btn_common' >Reset</button>
-            </div>        
+            </div>
 
             <TableComponent data={tableData} />
-         
+
             <div style={{ marginTop: "2%" }}>
              <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>
                        

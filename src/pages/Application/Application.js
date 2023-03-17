@@ -66,8 +66,8 @@ function  Application(props) {
     // if (this.state.data) {
     //   return <Link  to="/approval" />;
     // }
-      
- 
+
+
 
   }
   const cancelHandler = (e) => {
@@ -82,7 +82,7 @@ function  Application(props) {
           <h2 className='h2T'>Leave Application Screen</h2>
 
           <div className='main_container'>
-        
+
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
               <label>  Employee ID  </label>
               <input
@@ -95,7 +95,7 @@ function  Application(props) {
             </div>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <label>  Employee Name  </label>
-              <input  
+              <input
                 type="text"
                 name="empName"
                 value={empName}
@@ -148,9 +148,9 @@ function  Application(props) {
               <button className='btn_common' onClick={applyHandler} >Apply</button>
               <button className='btn_common'  onClick={cancelHandler}>Cancel</button>
             </div>
-         
+
           </div>
-          
+
         </div>
       </div>
     );
