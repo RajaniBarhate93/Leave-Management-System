@@ -2,7 +2,7 @@ import React from 'react';
 import "./Dashboard.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
-import {  Link,Redirect  } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 //const options1 = ['Privilege Leave', 'Casual Leave ', 'Sick Leave', 'Maternity Leave', 'Paternity Leave.'];
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
@@ -13,13 +13,13 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      empName: "Ryan Sann",
-      empId: "101",
+      empName: "",
+      empId: "",
       fromDate: "",
       toDate: "",
       selectValues: "",
-      startDate:"",
-      data:true
+      startDate: "",
+      data: true
 
     };
 
@@ -32,21 +32,25 @@ class Dashboard extends React.Component {
     this.setState({
       fromDate: date
     })
-    console.log("date==",this.state.fromDate)
+    console.log("date==", this.state.fromDate)
   }
   handleChangeTo = (date) => {
     this.setState({
       toDate: date
     })
-    console.log("date==",this.state.toDate)
+    console.log("date==", this.state.toDate)
   }
   setValues = selectValues => this.setState({ selectValues });
 
   handleInputChange = (event) => {
     console.log("data..." + event.target.value)
     event.preventDefault();
-      }
-      
+    const target = event.target;
+    this.setState({
+        [target.name]: target.value,
+    });
+  }
+
   handleSubmit(event) {
     // event.preventDefault();
     // Userfront.login({
@@ -55,18 +59,18 @@ class Dashboard extends React.Component {
     //   password: this.state.password,
     // });
   }
-  
-  applyHandler (event){
+
+  applyHandler(event) {
     console.log("kjbskb==")
     // if (this.state.data) {
     //   return <Link  to="/approval" />;
     // }
-      
- 
+
+
 
   }
   cancelHandler = (e) => {
-   
+
   }
   render() {
     return (
@@ -77,21 +81,22 @@ class Dashboard extends React.Component {
           <h2 className='h2T'>Leave Application Screen</h2>
 
           <div className='main_container'>
-        
+
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
               <label>  Employee ID  </label>
               <input
-                 type="text"
-                 name="Id"
-                 id="Id"
+                type="text"
+                name="empId"
+                id="Id"
                 value={this.state.empId}
                 onChange={this.handleInputChange}
               />
             </div>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <label>  Employee Name  </label>
-              <input  
+              <input
                 type="text"
+                name="empName"
                 value={this.state.empName}
                 onChange={this.handleInputChange}
               />   </div>
@@ -144,9 +149,9 @@ class Dashboard extends React.Component {
               }} >Apply</button> */}
               <button className='btn_common'  >Cancel</button>
             </div>
-         
+
           </div>
-          
+
         </div>
       </div>
     );
