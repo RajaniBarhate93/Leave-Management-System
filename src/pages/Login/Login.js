@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 //import basestyle from "../Base.module.css";
 import "./Login.css";
 //import axios from "axios";
+import ReactSwitch from 'react-switch';
 import { useNavigate, NavLink } from "react-router-dom"
 
 const Login = ({ setUserState }) => {
@@ -10,11 +11,24 @@ const Login = ({ setUserState }) => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [user, setUserDetails] = useState({
-    email: "blackpanther@gmail.com",
-    password: "admin@1234",
+    email: "",
+    password: "",
   });
-
-
+  const [checked, setChecked] = useState(true);
+  const [type, setType] = useState("employee");
+  useEffect(() => {
+    console.log(type);
+  }, [type,checked]);
+  const handleChangeToggle = val => {
+      setChecked(val)
+      if(val){
+        setType("employee")
+      }else if(val==false){
+          setType("Approver")
+        }
+        // if(val ? setType("employee"): setType("Approver"));
+  
+  }
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUserDetails({
@@ -36,10 +50,11 @@ const Login = ({ setUserState }) => {
     return error;
   };
   const cancelHandler = (e) => {
+    navigate("/")
+
 
   }
   const loginHandler = (e) => {
-
     e.preventDefault();
     setFormErrors(validateForm(user));
     setIsSubmit(true);
@@ -47,9 +62,8 @@ const Login = ({ setUserState }) => {
       alert("Please try again.....")
     }
     if(isSubmit){
-      navigate("/dashboard");
-     // <NavLink to="/dashboard"/>
-     
+      navigate("/records",{state:{userType:type}});
+       
     }
   };
 
@@ -78,6 +92,13 @@ const Login = ({ setUserState }) => {
           value={user.password}
         />
         <p className="error">{formErrors.password}</p>
+        <div>
+       {checked ? <span>Login with Employee</span>: <span>Login with  Approver</span>}
+       </div>
+      <ReactSwitch
+        checked={checked}
+        onChange={handleChangeToggle}
+      />
         <div className='btn_container'>
           <button className="button_common" onClick={loginHandler}>
             Login

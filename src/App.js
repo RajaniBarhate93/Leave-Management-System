@@ -6,9 +6,9 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import Dashboard from './pages/Dashboard/Dashboard';
+import Application from './pages/Application/Application';
 import Login from './pages/Login/Login';
-import Records from './pages/Records/Records';
+import Records from './pages/RecordsDashboard/Records';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer'
 import Layout from './components/Layout/Layout'
@@ -22,7 +22,7 @@ function App() {
        <Router>        
                  <Routes>
                  <Route exact={true} path='/' element={< Layout />}></Route>
-                 <Route exact={true} path='/dashboard' element={< Dashboard />}></Route>
+                 <Route exact={true} path='/dashboard' element={< Application />}></Route>
                  <Route exact={true} path='/records' element={< Records />}></Route>
                  <Route exact={true} path='/approval' element={< Approval />}></Route>
                  <Route exact={true} path='/table' element={< TableComponent />}></Route>

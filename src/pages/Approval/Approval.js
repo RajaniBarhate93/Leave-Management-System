@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate,useLocation } from "react-router-dom";
 import "./Approval.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
@@ -7,55 +8,64 @@ const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leav
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
 { id: 5, name: "Paternity Leave" }];
 
+function Approval(props) {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         empName: "",
+    //         empId: "",
+    //         fromDate: "",
+    //         toDate: "",
+    //         selectValues: "",
+    //         startDate: new Date()
+    //     };
 
-class Approval extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            empName: "",
-            empId: "",
-            fromDate: "",
-            toDate: "",
-            selectValues: "",
-            startDate: new Date()
-        };
+    //     // this.handleInputChange = this.handleInputChange.bind(this);
+    //     this.handleSubmit = this.handleSubmit.bind(this);
+    // }
 
-        // this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    
+  const navigate = useNavigate();
+  const [empName, setEmpName] = useState();
+  const [empId, setempId] = useState();
+  const [fromDate, setFromDate] = useState();  
+  const [startDate, setstartDate] = useState();
+  const [toDate, setToDate] = useState();
+  const [selectValues, setselectValues] = useState();
+  const { state } = useLocation();
+
+   const handleChangeFrom = (date) => {
+    setFromDate(date)
+    console.log("date==",this.state.fromDate)
     }
-    handleChangeFrom = (date) => {
-        this.setState({
-            fromDate: date
-        })
+    const handleChangeTo = (date) => {
+        setToDate(date)
+        console.log("date==",this.state.toDate)
     }
-    handleChangeTo = (date) => {
-        this.setState({
-            toDate: date
-        })
-    }
-    setValues = selectValues => this.setState({ selectValues });
+    const setValues = selectValues => setselectValues(selectValues);
 
-    handleInputChange = (event) => {
-        console.log("data..." + event.target.value)
-        event.preventDefault();
-        const target = event.target;
-        this.setState({
-            [target.name]: target.value,
-        });
-
-
-    }
-
-    handleSubmit(event) {
+    const handleInputChange = (event) => {
+        // console.log("data..." + event.target.value)
         // event.preventDefault();
-        // Userfront.login({
-        //   method: "password",
-        //   emailOrUsername: this.state.emailOrUsername,
-        //   password: this.state.password,
-        // });
+        // const target = event.target;
+        // this.setState({
+        //     [target.name]: target.value,
+      //  });
+
+
     }
 
-    render() {
+    const applyHandler= (event)=>{
+        
+    
+      }
+    const cancelHandler = (e) => {
+        navigate("/records");  
+      }
+      const rejectHandler = (e) => {
+       
+      }
+    // render() {
         return (
             <div className="App">
                 <div className="container">
@@ -67,19 +77,19 @@ class Approval extends React.Component {
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
                             <label>  Employee ID  </label>
                             <input
-                                name="id"
+                                name="empId"
                                 type="text"
-                                value={this.state.empId}
-                                onChange={this.handleInputChange}
+                                value={empId}
+                                onChange={handleInputChange}
                             />
                         </div>
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
                             <label>  Employee Name  </label>
                             <input
-                                name="name"
+                                name="empName"
                                 type="text"
-                                value={this.state.empName}
-                                onChange={this.handleInputChange}
+                                value={empName}
+                                onChange={handleInputChange}
                             />   </div>
 
 
@@ -87,18 +97,18 @@ class Approval extends React.Component {
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                 <p style={{ marginRight: "5px" }}>From Date</p>
                                 <DatePicker
-                                    value={this.state.fromDate}
-                                    selected={this.state.startDate}
-                                    onChange={this.handleChangeFrom}
+                                    value={fromDate}
+                                    selected={startDate}
+                                    onChange={handleChangeFrom}
                                     format="y-MM-dd"
                                 />
                             </div>
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
                                 <p style={{ marginRight: "5px" }}>  To Date</p>
                                 <DatePicker
-                                    value={this.state.toDate}
-                                    selected={this.state.startDate}
-                                    onChange={this.handleChangeTo}
+                                    value={toDate}
+                                    selected={startDate}
+                                    onChange={handleChangeTo}
                                     format="y-MM-dd"
 
                                 />
@@ -129,15 +139,15 @@ class Approval extends React.Component {
                         </div>
 
                         <div style={{ marginTop: "2%" }}>
-                        <button className='btn_common' ><Link to='/records'>Approve</Link></button>
+                        <button className='btn_common' onClick={applyHandler}  >Approve</button>
                             {/* <button className='btn_common' >Approve</button> */}
-                            <button className='btn_common' >Reject</button>
-                            <button className='btn_common' >Cancel</button>
+                            <button className='btn_common' onClick={rejectHandler} >Reject</button>
+                            <button className='btn_common' onClick={cancelHandler}>Cancel</button>
                         </div>
                     </div>
                 </div>
             </div>
         );
     }
-}
+
 export default Approval;

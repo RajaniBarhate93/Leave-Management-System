@@ -1,53 +1,58 @@
-import React from 'react';
-import "./Dashboard.css"
+import React, { useEffect, useState } from 'react';
+import { useNavigate,useLocation } from "react-router-dom";
+import "./Application.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
-import {  Link,Redirect  } from "react-router-dom"
 //const options1 = ['Privilege Leave', 'Casual Leave ', 'Sick Leave', 'Maternity Leave', 'Paternity Leave.'];
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
 { id: 5, name: "Paternity Leave" }];
 
 
-class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      empName: "Ryan Sann",
-      empId: "101",
-      fromDate: "",
-      toDate: "",
-      selectValues: "",
-      startDate:"",
-      data:true
+function  Application(props) {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     empName: "Ryan Sann",
+  //     empId: "101",
+  //     fromDate: "",
+  //     toDate: "",
+  //     selectValues: "",
+  //     startDate:"",
+  //     data:true
 
-    };
+  //   };
 
     // this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.applyHandler = this.applyHandler.bind(this);
-  }
-  handleChangeFrom = (date) => {
-    alert(date)
-    this.setState({
-      fromDate: date
-    })
+  //   this.handleSubmit = this.handleSubmit.bind(this);
+  //   this.applyHandler = this.applyHandler.bind(this);
+  // }
+
+  const navigate = useNavigate();
+  const [empName, setEmpName] = useState();
+  const [empId, setempId] = useState();
+  const [fromDate, setFromDate] = useState();  
+  const [startDate, setstartDate] = useState();
+  const [toDate, setToDate] = useState();
+  const [selectValues, setselectValues] = useState();
+  const { state } = useLocation();
+
+  const handleChangeFrom = (date) => {
+    setFromDate(date)
     console.log("date==",this.state.fromDate)
   }
-  handleChangeTo = (date) => {
-    this.setState({
-      toDate: date
-    })
+  const handleChangeTo = (date) => {
+    setToDate(date)
     console.log("date==",this.state.toDate)
   }
-  setValues = selectValues => this.setState({ selectValues });
+  const setValues = selectValues => setselectValues(selectValues);
 
-  handleInputChange = (event) => {
+  const handleInputChange = (event) => {
     console.log("data..." + event.target.value)
     event.preventDefault();
       }
       
-  handleSubmit(event) {
+      const handleSubmit=(event) =>{
     // event.preventDefault();
     // Userfront.login({
     //   method: "password",
@@ -56,7 +61,7 @@ class Dashboard extends React.Component {
     // });
   }
   
-  applyHandler (event){
+  const applyHandler= (event)=>{
     console.log("kjbskb==")
     // if (this.state.data) {
     //   return <Link  to="/approval" />;
@@ -65,10 +70,10 @@ class Dashboard extends React.Component {
  
 
   }
-  cancelHandler = (e) => {
-   
+  const cancelHandler = (e) => {
+    navigate("/records");  
   }
-  render() {
+ 
     return (
       <div className="App">
         <div className="container">
@@ -82,18 +87,19 @@ class Dashboard extends React.Component {
               <label>  Employee ID  </label>
               <input
                  type="text"
-                 name="Id"
+                 name="empId"
                  id="Id"
-                value={this.state.empId}
-                onChange={this.handleInputChange}
+                value={empId}
+                onChange={handleInputChange}
               />
             </div>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <label>  Employee Name  </label>
               <input  
                 type="text"
-                value={this.state.empName}
-                onChange={this.handleInputChange}
+                name="empName"
+                value={empName}
+                onChange={handleInputChange}
               />   </div>
 
 
@@ -101,18 +107,18 @@ class Dashboard extends React.Component {
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <p style={{ marginRight: "5px" }}>From Date</p>
                 <DatePicker
-                  value={this.state.fromDate}
-                  selected={this.state.startDate}
-                  onChange={this.handleChangeFrom}
+                  value={fromDate}
+                  selected={startDate}
+                  onChange={handleChangeFrom}
                   format="y-MM-dd"
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
                 <p style={{ marginRight: "5px" }}>  To Date</p>
                 <DatePicker
-                  value={this.state.toDate}
-                  selected={this.state.startDate}
-                  onChange={this.handleChangeTo}
+                  value={toDate}
+                  selected={startDate}
+                  onChange={handleChangeTo}
                   format="y-MM-dd"
 
                 />
@@ -129,7 +135,7 @@ class Dashboard extends React.Component {
                 closeOnSelect={true}
                 clearable={true}
                 Keep selected item in a list={false}
-                onChange={(values) => this.setValues(values)}
+                onChange={(values) => setValues(values)}
               />       </div>
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
@@ -138,11 +144,9 @@ class Dashboard extends React.Component {
             </div>
 
             <div style={{ marginTop: "2%" }}>
-              <Link className='btn_common' to='/approval'>Apply</Link>
-              {/* <button className='btn_common' onClick={() => {
-              <Link className='btn_common' to='/approval'/>
-              }} >Apply</button> */}
-              <button className='btn_common'  >Cancel</button>
+              {/* <Link className='btn_common' to='/approval'>Apply</Link> */}
+              <button className='btn_common' onClick={applyHandler} >Apply</button>
+              <button className='btn_common'  onClick={cancelHandler}>Cancel</button>
             </div>
          
           </div>
@@ -151,5 +155,5 @@ class Dashboard extends React.Component {
       </div>
     );
   }
-}
-export default Dashboard;
+
+export default Application;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate,useLocation } from "react-router-dom";
 import "./Records.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
@@ -7,11 +8,7 @@ const checkList = ["Apple", "Banana", "Tea", "Coffee"];
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
 { id: 5, name: "Paternity Leave" }];
-
-// Example Data
-var tableData = [
-  
-  // columns: ['Leave Type','From', 'To' ,"Action"],
+var tableData = [  
     {
      id: 1,
      'LeaveType': 'Sick Leve',
@@ -39,61 +36,43 @@ var tableData = [
      'Action':""
    }
   ]
+  function Records(props){
+  const navigate = useNavigate();
+  const [empName, setEmpName] = useState();
+  const [empId, setempId] = useState();
+  const [fromDate, setFromDate] = useState();  
+  const [startDate, setstartDate] = useState();
+  const [toDate, setToDate] = useState();
+  const [selectValues, setselectValues] = useState();
+  const { state } = useLocation();
 
-class Records extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      empName: "",
-      empId: "",
-      fromDate: "",
-      toDate: "",
-      selectValues: "",
-      startDate: new Date(),
-      checked:[]
-    };
+  const handleChangeFrom = (date) => {   
+    setFromDate(date)
+  }
+  const handleChangeTo = (date) => {    
+    setToDate(date)
+  }
+   const setValues = selectValues => setselectValues(selectValues);
 
-    // this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleChangeFrom = (date) => {
-    this.setState({
-      fromDate: date
-    })
-  }
-  handleChangeTo = (date) => {
-    this.setState({
-      toDate: date
-    })
-  }
- 
-  setValues = selectValues => this.setState({ selectValues });
-
-  handleInputChange = (event) => {
+  const handleInputChange = (event) => {
     console.log("data..." + event.target.value)
     event.preventDefault();
     const target = event.target;
     this.setState({
       [target.name]: target.value,
     });
-
-
   }
 
-  handleSubmit(event) {
-    // event.preventDefault();
-    // Userfront.login({
-    //   method: "password",
-    //   emailOrUsername: this.state.emailOrUsername,
-    //   password: this.state.password,
-    // });
-  }
+ const handleSubmit=(event)=> {  
+  console.log(state.userType)
+  navigate("/dashboard");  
 
-
-  // 
-
+ }
+ const handleApproveRej=(event)=>{
+  navigate("/approval");  
+ }
  
-  render() {
+  // render() {
     return (
       <div className="App">
         <div className="container">
@@ -105,10 +84,10 @@ class Records extends React.Component {
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
               <label>  Employee ID  </label>
               <input
-                name="id"
+                name="empId"
                 type="text"
-                value={this.state.empId}
-                onChange={this.handleInputChange}
+                value={empId}
+                onChange={handleInputChange}
               />
             </div>
 
@@ -117,18 +96,18 @@ class Records extends React.Component {
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <p style={{ marginRight: "5px" }}>From Date</p>
                 <DatePicker
-                  value={this.state.fromDate}
-                  selected={this.state.startDate}
-                  onChange={this.handleChangeFrom}
+                  value={fromDate}
+                  selected={startDate}
+                  onChange={handleChangeFrom}
                   format="y-MM-dd"
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
                 <p style={{ marginRight: "5px" }}>  To Date</p>
                 <DatePicker
-                  value={this.state.toDate}
-                  selected={this.state.startDate}
-                  onChange={this.handleChangeTo}
+                  value={toDate}
+                  selected={startDate}
+                  onChange={handleChangeTo}
                   format="y-MM-dd"
 
                 />
@@ -145,13 +124,14 @@ class Records extends React.Component {
             <TableComponent data={tableData} />
          
             <div style={{ marginTop: "2%" }}>
-              <button className='btn_commonbtm' >Apply Leave</button>
-              <button className='btn_commonbtm' >Approve/Reject</button>
+             <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>
+                       
+               <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>
             </div>
           </div>
         </div>
       </div>
     );
   }
-}
+// }
 export default Records;
