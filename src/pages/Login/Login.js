@@ -47,7 +47,8 @@ const Login = ({ setUserState }) => {
       alert("Please try again.....")
     }
     if(isSubmit){
-      navigate("/dashboard");
+      navigate("/records");
+      //  navigate("/dashboard");
      // <NavLink to="/dashboard"/>
      
     }

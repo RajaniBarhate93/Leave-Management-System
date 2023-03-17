@@ -3,6 +3,7 @@ import "./Records.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
 import TableComponent from '../../components/TableComponent';
+import { Link, Redirect } from "react-router-dom"
 const checkList = ["Apple", "Banana", "Tea", "Coffee"];
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
@@ -10,35 +11,35 @@ const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leav
 
 // Example Data
 var tableData = [
-  
+
   // columns: ['Leave Type','From', 'To' ,"Action"],
-    {
-     id: 1,
-     'LeaveType': 'Sick Leve',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-    
-   }, {
+  {
+    id: 1,
+    'LeaveType': 'Sick Leve',
+    'From': '10th Feb 2023',
+    'To': '10th Feb 2023',
+    'Action': ""
+
+  }, {
     id: 2,
-     'LeaveType': 'Privilege',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-   },{
+    'LeaveType': 'Privilege',
+    'From': '10th Feb 2023',
+    'To': '10th Feb 2023',
+    'Action': ""
+  }, {
     id: 3,
-     'LeaveType': 'Privilege',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-   }, {
+    'LeaveType': 'Privilege',
+    'From': '10th Feb 2023',
+    'To': '10th Feb 2023',
+    'Action': ""
+  }, {
     id: 4,
-     'LeaveType': 'Maternity',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-   }
-  ]
+    'LeaveType': 'Maternity',
+    'From': '10th Feb 2023',
+    'To': '10th Feb 2023',
+    'Action': ""
+  }
+]
 
 class Records extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Records extends React.Component {
       toDate: "",
       selectValues: "",
       startDate: new Date(),
-      checked:[]
+      checked: []
     };
 
     // this.handleInputChange = this.handleInputChange.bind(this);
@@ -66,7 +67,7 @@ class Records extends React.Component {
       toDate: date
     })
   }
- 
+
   setValues = selectValues => this.setState({ selectValues });
 
   handleInputChange = (event) => {
@@ -92,7 +93,7 @@ class Records extends React.Component {
 
   // 
 
- 
+
   render() {
     return (
       <div className="App">
@@ -135,18 +136,18 @@ class Records extends React.Component {
               </div>
             </div>
 
-         
-            <div style={{ marginTop: "2%",marginBottom:"2%"}}>
+
+            <div style={{ marginTop: "2%", marginBottom: "2%" }}>
               <button className='btn_common' >Search</button>
               <button className='btn_common' >Cancel</button>
               <button className='btn_common' >Reset</button>
-            </div>        
+            </div>
 
             <TableComponent data={tableData} />
-         
+
             <div style={{ marginTop: "2%" }}>
-              <button className='btn_commonbtm' >Apply Leave</button>
-              <button className='btn_commonbtm' >Approve/Reject</button>
+              <Link className='btn_commonbtm' to='/dashboard' >Apply Leave</Link>
+              <Link className='btn_commonbtm' to='/approval'>Approve/Reject </Link>
             </div>
           </div>
         </div>
