@@ -67,7 +67,7 @@ class Approval extends React.Component {
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
                             <label>  Employee ID  </label>
                             <input
-                                name="id"
+                                name="empId"
                                 type="text"
                                 value={this.state.empId}
                                 onChange={this.handleInputChange}
@@ -76,7 +76,7 @@ class Approval extends React.Component {
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
                             <label>  Employee Name  </label>
                             <input
-                                name="name"
+                                name="empName"
                                 type="text"
                                 value={this.state.empName}
                                 onChange={this.handleInputChange}
