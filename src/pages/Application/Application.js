@@ -10,24 +10,7 @@ const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leav
 
 
 function  Application(props) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     empName: "Ryan Sann",
-  //     empId: "101",
-  //     fromDate: "",
-  //     toDate: "",
-  //     selectValues: "",
-  //     startDate:"",
-  //     data:true
-
-  //   };
-
-    // this.handleInputChange = this.handleInputChange.bind(this);
-  //   this.handleSubmit = this.handleSubmit.bind(this);
-  //   this.applyHandler = this.applyHandler.bind(this);
-  // }
-
+  
   const navigate = useNavigate();
   const [empName, setEmpName] = useState();
   const [empId, setempId] = useState();
@@ -63,12 +46,7 @@ function  Application(props) {
   
   const applyHandler= (event)=>{
     console.log("kjbskb==")
-    // if (this.state.data) {
-    //   return <Link  to="/approval" />;
-    // }
-
-
-
+   
   }
   const cancelHandler = (e) => {
     navigate("/records");  
@@ -143,8 +121,7 @@ function  Application(props) {
               < textarea className='richtxt' id="w3review" name="w3review" rows="3" cols="50"></textarea>
             </div>
 
-            <div style={{ marginTop: "2%" }}>
-              {/* <Link className='btn_common' to='/approval'>Apply</Link> */}
+            <div style={{ marginTop: "2%" }}>            
               <button className='btn_common' onClick={applyHandler} >Apply</button>
               <button className='btn_common'  onClick={cancelHandler}>Cancel</button>
             </div>
