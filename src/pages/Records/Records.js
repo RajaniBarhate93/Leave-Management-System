@@ -106,7 +106,7 @@ class Records extends React.Component {
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
               <label>  Employee ID  </label>
               <input
-                name="id"
+                name="empId"
                 type="text"
                 value={this.state.empId}
                 onChange={this.handleInputChange}
