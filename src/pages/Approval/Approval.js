@@ -9,22 +9,7 @@ const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leav
 { id: 5, name: "Paternity Leave" }];
 
 function Approval(props) {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         empName: "",
-    //         empId: "",
-    //         fromDate: "",
-    //         toDate: "",
-    //         selectValues: "",
-    //         startDate: new Date()
-    //     };
-
-    //     // this.handleInputChange = this.handleInputChange.bind(this);
-    //     this.handleSubmit = this.handleSubmit.bind(this);
-    // }
-
-    
+       
   const navigate = useNavigate();
   const [empName, setEmpName] = useState();
   const [empId, setempId] = useState();
@@ -51,8 +36,6 @@ function Approval(props) {
         // this.setState({
         //     [target.name]: target.value,
       //  });
-
-
     }
 
     const applyHandler= (event)=>{
@@ -65,7 +48,7 @@ function Approval(props) {
       const rejectHandler = (e) => {
        
       }
-    // render() {
+
         return (
             <div className="App">
                 <div className="container">

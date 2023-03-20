@@ -47,6 +47,10 @@ var tableData = [
   const [selectValues, setselectValues] = useState();
   const { state } = useLocation();
 
+  let showbtn= null
+  state.userType === "employee" ? showbtn=true: showbtn =false;
+
+
   const handleChangeFrom = (date) => {   
     setFromDate(date)
   }
@@ -59,9 +63,9 @@ var tableData = [
     console.log("data..." + event.target.value)
     event.preventDefault();
     const target = event.target;
-    this.setState({
-      [target.name]: target.value,
-    });
+    // this.setState({
+    //   [target.name]: target.value,
+    // });
   }
 
  const handleSubmit=(event)=> {  
@@ -124,12 +128,12 @@ var tableData = [
               <button className='btn_common' >Reset</button>
             </div>
 
-            <TableComponent data={tableData} />
+            <TableComponent data={tableData} userTypes={state.userType} />
 
             <div style={{ marginTop: "2%" }}>
-             <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>
+            {showbtn == true &&  <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
                        
-               <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>
+            {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>}
             </div>
           </div>
         </div>
