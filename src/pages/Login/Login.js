@@ -18,7 +18,12 @@ const Login = ({ setUserState }) => {
   const [type, setType] = useState("employee");
   useEffect(() => {
     console.log(type);
+    sessionStorage.setItem("type",type);    
+  var pageView = sessionStorage.getItem("type");
   }, [type,checked]);
+
+
+
   const handleChangeToggle = val => {
       setChecked(val)
       if(val){

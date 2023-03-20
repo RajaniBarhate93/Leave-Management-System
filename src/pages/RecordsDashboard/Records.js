@@ -46,9 +46,27 @@ var tableData = [
   const [toDate, setToDate] = useState();
   const [selectValues, setselectValues] = useState();
   const { state } = useLocation();
+  const [type, setType] = useState();
+  
+   useEffect(() => { 
+  var pageView = sessionStorage.getItem("type");
+  console.log("record useeffect[]"+type);
+  if(pageView){
+   setType(pageView)
+  }
+  },[]);
+
 
   let showbtn= null
-  state.userType === "employee" ? showbtn=true: showbtn =false;
+  
+  // if(state.userType && ( state.userType != null || state.userType !=undefined ||state.userType !="")){  
+ 
+  //   userType= state.userType 
+  // }else{
+  //   userType=pageView
+  // }
+
+  type === "employee" ? showbtn=true: showbtn =false;
 
 
   const handleChangeFrom = (date) => {   
@@ -69,7 +87,7 @@ var tableData = [
   }
 
  const handleSubmit=(event)=> {  
-  console.log(state.userType)
+
   navigate("/dashboard");  
 
  }
@@ -104,7 +122,7 @@ var tableData = [
                   value={fromDate}
                   selected={startDate}
                   onChange={handleChangeFrom}
-                  format="y-MM-dd"
+                  format="DD-MM-YYYY"
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
@@ -113,7 +131,7 @@ var tableData = [
                   value={toDate}
                   selected={startDate}
                   onChange={handleChangeTo}
-                  format="y-MM-dd"
+                  format="DD-MM-YYYY"
 
                 />
               </div>
@@ -126,7 +144,7 @@ var tableData = [
               <button className='btn_common' >Reset</button>
             </div>
 
-            <TableComponent data={tableData} userTypes={state.userType} />
+            <TableComponent data={tableData} userTypes={type} />
 
             <div style={{ marginTop: "2%" }}>
             {showbtn == true &&  <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
