@@ -6,6 +6,7 @@ import DatePicker from 'react-date-picker';
 import TableComponent from '../../components/TableComponent';
 import { getleaveRecords } from '../../services/Service';
 import moment from 'moment';
+let tableData1=[]
 const tableData = [
   { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" },
   { "empId": 1012, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" }
@@ -23,7 +24,8 @@ function Records(props) {
   const [SearchObj, setSearchObj] = useState({ "empId": '', "startDate": '', "endDate": '' })
   const [type, setType] = useState();
   let [responseData, setResponseData] = React.useState([]);
-  //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
+  let [showTable,setShowTable]=useState(false)
+    //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
   const [tableDatas, settableDatas] = useState([]);
 
   useEffect(() => {
@@ -34,13 +36,13 @@ function Records(props) {
     }
   }, []);
 
-  useEffect(() => {
-    settableDatas([...tableData]);
-    const timer = setTimeout(() => {
-      settableDatas([...tableData]);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [])
+  // useEffect(() => {
+  //   settableDatas([...tableData]);
+  //   const timer = setTimeout(() => {
+  //     settableDatas([...tableData]);
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [])
 
   let showbtn = null
   type === "employee" ? showbtn = true : showbtn = false;
@@ -104,7 +106,10 @@ function Records(props) {
 
   }
 
-  const fetchData = React.useCallback(() => {
+  const fetchData=()=> { 
+    if(tableData.length){   
+      setShowTable(true)
+    }
     axios({
       "method": "GET",
       "url": "http://localhost:9000/getLeave",
@@ -118,16 +123,20 @@ function Records(props) {
     })
     .then((response) => {
       setResponseData(response.data)
+      if(response.data.length){
+        alert(true)
+        setShowTable(true)
+      }
     })
     .catch((error) => {
       console.log(error)
     })
-  }, [])
+  }
 
   React.useEffect(() => {
     fetchData()
-  }, [fetchData])
-
+  }, [])
+  
 
   return (
     <div className="App">
@@ -173,9 +182,9 @@ function Records(props) {
             <button className='btn_common' >Reset</button>
           </div>
 {/* render conditionally */}
-          <TableComponent data={tableData} userTypes={type} />
+         {showTable && <TableComponent data={tableData} userTypes={type} />} 
 {/* instead of show button add the flag which depends on search result len */}
-          {showbtn === false && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
+          {showbtn === false && showTable && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <p>Comment</p>
               < textarea className='richtxt' id="w3review" name="w3review" rows="3" cols="50" onChange={(e) => onchangeComment(e)}></textarea>
@@ -191,8 +200,8 @@ function Records(props) {
           <div style={{ marginTop: "2%" }}>
             {showbtn == true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {showbtn === false && < button className='btn_common' >Approve</button>}
-            {showbtn === false && <button className='btn_common'  >Reject</button>}
+            {showbtn === false &&  < button className='btn_common' >Approve</button>}
+            {showbtn === false &&  <button className='btn_common'  >Reject</button>}
             <button className='btn_common' >Cancel</button>
           </div>
         </div>

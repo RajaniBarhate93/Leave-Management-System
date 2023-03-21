@@ -10,7 +10,8 @@ function TableComponent(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [tableData, setTableData] = useState(props.data);
   const [editData, setEditData] = useState('');
-console.log("myte="+tableData)
+  
+console.log("myte="+JSON.stringify(tableData))
   let showbtn
   props.userTypes === "employee" ? showbtn = true : showbtn = false
   const submit = (e) => {
