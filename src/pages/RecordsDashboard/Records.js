@@ -1,162 +1,186 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Records.css"
 import DatePicker from 'react-date-picker';
 import Select from "react-dropdown-select";
 import TableComponent from '../../components/TableComponent';
 import { Link, Redirect } from "react-router-dom"
+import { getleaveRecords } from '../../services/Service';
+import moment from 'moment';
 const checkList = ["Apple", "Banana", "Tea", "Coffee"];
 const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
 { id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
 { id: 5, name: "Paternity Leave" }];
-var tableData = [  
-    {
-     id: 1,
-     'LeaveType': 'Sick Leve',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-    
-   }, {
-    id: 2,
-    'LeaveType': 'Privilege',
-    'From': '10th Feb 2023',
-    'To': '10th Feb 2023',
-    'Action': ""
-  }, {
-    id: 3,
-    'LeaveType': 'Privilege',
-    'From': '10th Feb 2023',
-    'To': '10th Feb 2023',
-    'Action': ""
-  }, {
-    id: 4,
-     'LeaveType': 'Maternity',
-     'From': '10th Feb 2023',
-     'To': '10th Feb 2023',
-     'Action':""
-   }
-  ]
-  function Records(props){
+const tableData = [
+  { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" },
+  { "empId": 1012, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" }
+]
+const loadedState = [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]
+
+function Records(props) {
   const navigate = useNavigate();
   const [empName, setEmpName] = useState();
   const [empId, setempId] = useState();
-  const [fromDate, setFromDate] = useState();  
+  const [fromDate, setFromDate] = useState();
   const [startDate, setstartDate] = useState();
   const [toDate, setToDate] = useState();
   const [selectValues, setselectValues] = useState();
   const { state } = useLocation();
+  const [SearchObj, setSearchObj] = useState({ "empId": '', "startDate": '', "endDate": '' })
   const [type, setType] = useState();
-  
-   useEffect(() => { 
-  var pageView = sessionStorage.getItem("type");
-  console.log("record useeffect[]"+type);
-  if(pageView){
-   setType(pageView)
-  }
-  },[]);
+  const [states, setState] = useState([])
+  //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
+  const [tableDatas, settableDatas] = useState([]);
 
+  useEffect(() => {
+    var pageView = sessionStorage.getItem("type");
+    console.log("record useeffect[]" + type);
+    if (pageView) {
+      setType(pageView)
+    }
+  }, []);
 
-  let showbtn= null
-  
-  // if(state.userType && ( state.userType != null || state.userType !=undefined ||state.userType !="")){  
- 
-  //   userType= state.userType 
-  // }else{
-  //   userType=pageView
-  // }
+  useEffect(() => {
+    settableDatas([...tableData]);
+    const timer = setTimeout(() => {
+      settableDatas([...tableData]);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [])
 
-  type === "employee" ? showbtn=true: showbtn =false;
+  let showbtn = null
+  type === "employee" ? showbtn = true : showbtn = false;
 
-
-  const handleChangeFrom = (date) => {   
+  const handleChangeFrom = (date) => {
     setFromDate(date)
+    var date1 = moment(date).format('DD-MM-YYYY');
+    console.log("data1..." + date1)
+    setSearchObj({
+      ...SearchObj,
+      startDate: date1
+    });
   }
-  const handleChangeTo = (date) => {    
+  const handleChangeTo = (date) => {
     setToDate(date)
+    var date1 = moment(date).format('DD-MM-YYYY');
+    console.log("data1..." + date1)
+    setSearchObj({
+      ...SearchObj,
+      endDate: date1
+    });
   }
-   const setValues = selectValues => setselectValues(selectValues);
+  const setValues = (selectValues) => {
+    alert(selectValues)
+    setselectValues(selectValues);
+  }
 
-  const handleInputChange = (event) => {
-    console.log("data..." + event.target.value)
+  const handleIdChange = (event) => {
+    console.log(event)
+    setSearchObj({
+      ...SearchObj,
+      empId: event.target.value
+    });
+  }
+
+  const handleSubmit = (event) => {
+    navigate("/dashboard");
+  }
+
+
+
+  const searchhandler = (event) => {
+    console.log("kjbskb==", JSON.stringify(SearchObj))
+    const fetchData = async () => {
+      const data = await fetch(getleaveRecords)
+      const response = await data.json()
+      if (!response) {
+        throw new Error('Data coud not be fetched!')
+      } else {
+        return response.json()
+        //setResponseData(response.data)
+      }
+    }
+
+  }
+
+  const onchangeComment = (event) => {
     event.preventDefault();
-    const target = event.target;
-    // this.setState({
-    //   [target.name]: target.value,
-    // });
+    //   setApplyObj({
+    //    ...ApplObj,
+    //    comments: event.target.value
+    //  });    
   }
 
- const handleSubmit=(event)=> {  
 
-  navigate("/dashboard");  
+  return (
+    <div className="App">
+      <div className="container">
 
- }
- const handleApproveRej=(event)=>{
-  navigate("/approval");  
- }
- 
+        <h1 className='h1T'><u>Leave Management System</u></h1>
+        <h2 className='h2T'>Leave Records</h2>
 
-
-  // render() {
-    return (
-      <div className="App">
-        <div className="container">
-
-          <h1 className='h1T'><u>Leave Management System</u></h1>
-          <h2 className='h2T'>Leave Records</h2>
-
-          <div className='main_container'>
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
-              <label>  Employee ID  </label>
-              <input
-                name="empId"
-                type="text"
-                value={empId}
-                onChange={handleInputChange}
+        <div className='main_container'>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
+            <label>  Employee ID  </label>
+            <input
+              name="empId"
+              type="text"
+              id="Id"
+              value={SearchObj.empId}
+              onChange={(e) => handleIdChange(e)}
+            />
+          </div>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+              <p style={{ marginRight: "5px" }}>From Date</p>
+              <DatePicker
+                value={fromDate}
+                selected={startDate}
+                onChange={handleChangeFrom}
+                dateFormat="DD-MM-YYYY"
               />
             </div>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
+              <p style={{ marginRight: "5px" }}>  To Date</p>
+              <DatePicker
+                value={toDate}
+                selected={startDate}
+                onChange={handleChangeTo}
+                dateFormat="DD-MM-YYYY"
+              />
+            </div>
+          </div>
+          <div style={{ marginTop: "2%", marginBottom: "2%" }}>
+            <button className='btn_common' onClick={searchhandler}>Search</button>
+            <button className='btn_common' >Reset</button>
+          </div>
 
+          <TableComponent data={tableData} userTypes={type} />
 
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" }}>
-              <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <p style={{ marginRight: "5px" }}>From Date</p>
-                <DatePicker
-                  value={fromDate}
-                  selected={startDate}
-                  onChange={handleChangeFrom}
-                  format="DD-MM-YYYY"
-                />
-              </div>
-              <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
-                <p style={{ marginRight: "5px" }}>  To Date</p>
-                <DatePicker
-                  value={toDate}
-                  selected={startDate}
-                  onChange={handleChangeTo}
-                  format="DD-MM-YYYY"
-
-                />
-              </div>
+          {showbtn === false && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
+              <p>Comment</p>
+              < textarea className='richtxt' id="w3review" name="w3review" rows="3" cols="50" onChange={(e) => onchangeComment(e)}></textarea>
             </div>
 
-
-            <div style={{ marginTop: "2%", marginBottom: "2%" }}>
-              <button className='btn_common' >Search</button>
-              <button className='btn_common' >Cancel</button>
-              <button className='btn_common' >Reset</button>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
+              <p>Approver's Comment</p>
+              < textarea className='richtxtcmt' id="w3review" name="w3review" rows="3" cols="50"></textarea>
             </div>
 
-            <TableComponent data={tableData} userTypes={type} />
-
-            <div style={{ marginTop: "2%" }}>
-            {showbtn == true &&  <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
-                       
-            {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>}
-            </div>
+          </div>
+          }
+          <div style={{ marginTop: "2%" }}>
+            {showbtn == true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
+            {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
+            {showbtn === false && < button className='btn_common' >Approve</button>}
+            {showbtn === false && <button className='btn_common'  >Reject</button>}
+            <button className='btn_common' >Cancel</button>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 // }
 export default Records;

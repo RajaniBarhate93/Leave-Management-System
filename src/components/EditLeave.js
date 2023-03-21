@@ -101,7 +101,7 @@ function EditLEaveComponent(props) {
 
                     <div style={{ marginTop: "2%" }}>
                         {/* <Link className='btn_common' to='/approval'>Apply</Link> */}
-                        <button className='btn_common' onClick={applyHandler} >Apply</button>
+                        <button className='btn_common' onClick={applyHandler} >Save</button>
                         <button className='btn_common' onClick={props.hideModal}>Cancel</button>
                     </div>
                 </div></div>

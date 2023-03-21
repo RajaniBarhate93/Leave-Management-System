@@ -10,7 +10,7 @@ function TableComponent(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [tableData, setTableData] = useState(props.data);
   const [editData, setEditData] = useState('');
-
+console.log("myte="+tableData)
   let showbtn
   props.userTypes === "employee" ? showbtn = true : showbtn = false
   const submit = (e) => {
@@ -57,24 +57,32 @@ function TableComponent(props) {
         </thead>
         <tbody>
           {tableData.map((data) => (
-            <tr key={data.id}>
+            <tr key={data.empId}>
               <td>
                 <input type="checkbox"
                   checked={data.selected}
                   onChange={() => {
                     const newData = [...tableData];
-                    const index = newData.findIndex((item) => item.id === data.id);
+                    const index = newData.findIndex((item) => item.empId === data.empId);
                     newData[index].selected = !newData[index].selected;
                     setTableData(newData);
                     console.log("newData==" + JSON.stringify(newData))
+                    var result = newData.find(function(e) {
+                      return e.selected == true;
+                    });
+                    
+                    console.log(result)
+                      sessionStorage.setItem('selectedRow', JSON.stringify(result));
+                      var obj =  sessionStorage.getItem('selectedRow');
+                   console.log("object==="+obj);
 
                   }}
                 />
                 <label> </label>
               </td>
-              <td>{data.LeaveType}</td>
-              <td>{data.From}</td>
-              <td>{data.To}</td>
+              <td>{data.leaveType}</td>
+              <td>{data.startDate}</td>
+              <td>{data.endDate}</td>
 
               {showbtn &&
                 <td>
