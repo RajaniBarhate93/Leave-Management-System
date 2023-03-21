@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Records.css"
+import axios from 'axios';
 import DatePicker from 'react-date-picker';
-import Select from "react-dropdown-select";
 import TableComponent from '../../components/TableComponent';
-import { Link, Redirect } from "react-router-dom"
 import { getleaveRecords } from '../../services/Service';
 import moment from 'moment';
-const checkList = ["Apple", "Banana", "Tea", "Coffee"];
-const options = [{ id: 1, name: "Privilege Leave" }, { id: 2, name: "Casual Leave " },
-{ id: 3, name: "Sick Leave" }, { id: 4, name: "Maternity Leave" },
-{ id: 5, name: "Paternity Leave" }];
 const tableData = [
   { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" },
   { "empId": 1012, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" }
@@ -24,11 +19,10 @@ function Records(props) {
   const [fromDate, setFromDate] = useState();
   const [startDate, setstartDate] = useState();
   const [toDate, setToDate] = useState();
-  const [selectValues, setselectValues] = useState();
-  const { state } = useLocation();
+  const [selectValues, setselectValues] = useState(); 
   const [SearchObj, setSearchObj] = useState({ "empId": '', "startDate": '', "endDate": '' })
   const [type, setType] = useState();
-  const [states, setState] = useState([])
+  let [responseData, setResponseData] = React.useState([]);
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
   const [tableDatas, settableDatas] = useState([]);
 
@@ -87,6 +81,13 @@ function Records(props) {
   }
 
 
+  const onchangeComment = (event) => {
+    event.preventDefault();
+    //   setApplyObj({
+    //    ...ApplObj,
+    //    comments: event.target.value
+    //  });    
+  }
 
   const searchhandler = (event) => {
     console.log("kjbskb==", JSON.stringify(SearchObj))
@@ -103,13 +104,29 @@ function Records(props) {
 
   }
 
-  const onchangeComment = (event) => {
-    event.preventDefault();
-    //   setApplyObj({
-    //    ...ApplObj,
-    //    comments: event.target.value
-    //  });    
-  }
+  const fetchData = React.useCallback(() => {
+    axios({
+      "method": "GET",
+      "url": "http://localhost:9000/getLeave",
+      "headers": {
+        "content-type": "application/octet-stream",
+        // "x-rapidapi-host": "quotes15.p.rapidapi.com",
+        // "x-rapidapi-key": process.env.REACT_APP_API_KEY
+      }, "params": {
+        SearchObj: SearchObj
+      }
+    })
+    .then((response) => {
+      setResponseData(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, [])
+
+  React.useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
 
   return (
@@ -151,12 +168,13 @@ function Records(props) {
             </div>
           </div>
           <div style={{ marginTop: "2%", marginBottom: "2%" }}>
-            <button className='btn_common' onClick={searchhandler}>Search</button>
+            {/* <button className='btn_common' onClick={searchhandler}>Search</button> */}
+            <button className='btn_common' onClick={fetchData}>Search</button>
             <button className='btn_common' >Reset</button>
           </div>
-
+{/* render conditionally */}
           <TableComponent data={tableData} userTypes={type} />
-
+{/* instead of show button add the flag which depends on search result len */}
           {showbtn === false && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <p>Comment</p>
