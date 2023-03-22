@@ -5,11 +5,13 @@ import axios from 'axios';
 import DatePicker from 'react-date-picker';
 import TableComponent from '../../components/TableComponent';
 import { getleaveRecords } from '../../services/Service';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 import moment from 'moment';
-let tableData1=[]
+let tableData1 = []
 const tableData = [
   { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" },
-  { "empId": 1012, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" }
+  { "empId": 1012, "empName": "Ryan Sann", "startDate": "07-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" }
 ]
 const loadedState = [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]
 
@@ -20,17 +22,18 @@ function Records(props) {
   const [fromDate, setFromDate] = useState();
   const [startDate, setstartDate] = useState();
   const [toDate, setToDate] = useState();
-  const [selectValues, setselectValues] = useState(); 
+  const [selectValues, setselectValues] = useState();
   const [SearchObj, setSearchObj] = useState({ "empId": '', "startDate": '', "endDate": '' })
   const [type, setType] = useState();
   let [responseData, setResponseData] = React.useState([]);
-  let [showTable,setShowTable]=useState(false)
-    //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
+  let [showTable, setShowTable] = useState(false)
+  //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
   const [tableDatas, settableDatas] = useState([]);
 
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
     console.log("record useeffect[]" + type);
+
     if (pageView) {
       setType(pageView)
     }
@@ -81,7 +84,9 @@ function Records(props) {
   const handleSubmit = (event) => {
     navigate("/dashboard");
   }
-
+  const backToLogin = (event) => {
+    navigate("/");
+  }
 
   const onchangeComment = (event) => {
     event.preventDefault();
@@ -106,37 +111,66 @@ function Records(props) {
 
   }
 
-  const fetchData=()=> { 
-    if(tableData.length){   
-      setShowTable(true)
+  const fetchData = () => {
+    if (!fromDate || !toDate) {
+      confirmAlert({
+        message: 'Please select From Date and To Date.',
+        buttons: [
+          {
+            label: 'Ok',
+          }]
+      })
     }
-    axios({
-      "method": "GET",
-      "url": "http://localhost:9000/getLeave",
-      "headers": {
-        "content-type": "application/octet-stream",
-        // "x-rapidapi-host": "quotes15.p.rapidapi.com",
-        // "x-rapidapi-key": process.env.REACT_APP_API_KEY
-      }, "params": {
-        SearchObj: SearchObj
-      }
-    })
-    .then((response) => {
-      setResponseData(response.data)
-      if(response.data.length){
-        alert(true)
+    else if (type !== "employee" && empId == "") {
+     confirmAlert({
+        message: 'Please fill the Employee Id.',
+        buttons: [
+          {
+            label: 'Ok',
+          }]
+      })
+    }
+    else {
+
+
+      settableDatas(tableData)
+      if (tableDatas.length) {
         setShowTable(true)
       }
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      axios({
+        "method": "GET",
+        "url": "http://localhost:9000/getLeave",
+        "headers": {
+          "content-type": "application/octet-stream",
+          // "x-rapidapi-host": "quotes15.p.rapidapi.com",
+          // "x-rapidapi-key": process.env.REACT_APP_API_KEY
+        }, "params": {
+          SearchObj: SearchObj
+        }
+      })
+        .then((response) => {
+          setResponseData(response.data)
+          if (response.data.length) {
+            alert(true)
+            setShowTable(true)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }
+  const resetData = () => {
+    settableDatas([])
+    setShowTable(false)
+    setFromDate()
+    setToDate()
 
-  React.useEffect(() => {
-    fetchData()
-  }, [])
-  
+  }
+  // React.useEffect(() => {
+  //   fetchData()
+  // }, [])
+
 
   return (
     <div className="App">
@@ -149,10 +183,11 @@ function Records(props) {
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
             <label>  Employee ID  </label>
             <input
+              disabled={type == "employee" ? true : false}
               name="empId"
               type="text"
               id="Id"
-              value={SearchObj.empId}
+              value={type == 'employee' ? '12345' : SearchObj.empId}
               onChange={(e) => handleIdChange(e)}
             />
           </div>
@@ -179,11 +214,15 @@ function Records(props) {
           <div style={{ marginTop: "2%", marginBottom: "2%" }}>
             {/* <button className='btn_common' onClick={searchhandler}>Search</button> */}
             <button className='btn_common' onClick={fetchData}>Search</button>
-            <button className='btn_common' >Reset</button>
+            <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
-{/* render conditionally */}
-         {showTable && <TableComponent data={tableData} userTypes={type} />} 
-{/* instead of show button add the flag which depends on search result len */}
+          {/* render conditionally */}
+
+
+          {showTable && <TableComponent data={tableDatas} userTypes={type} />}
+
+
+          {/* instead of show button add the flag which depends on search result len */}
           {showbtn === false && showTable && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <p>Comment</p>
@@ -200,9 +239,9 @@ function Records(props) {
           <div style={{ marginTop: "2%" }}>
             {showbtn == true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {showbtn === false &&  < button className='btn_common' >Approve</button>}
-            {showbtn === false &&  <button className='btn_common'  >Reject</button>}
-            <button className='btn_common' >Cancel</button>
+            {showbtn === false && < button className='btn_common' >Approve</button>}
+            {showbtn === false && <button className='btn_common'  >Reject</button>}
+            <button className='btn_common' onClick={backToLogin}>Cancel</button>
           </div>
         </div>
       </div>
