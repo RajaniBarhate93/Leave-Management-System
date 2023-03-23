@@ -48,19 +48,22 @@ function TableComponent(props) {
       <table>
         <thead>
           <tr>
-           { showbtn === false && <th style={{ width: "40px" }}></th>}
+            {showbtn === false && <th style={{ width: "40px" }}></th>}
+            {!showbtn && <th>Employee ID</th>}
+            {!showbtn && <th>Employee Name</th>}
             <th>Leave Type</th>
             <th>From</th>
             <th>To</th>
-            {showbtn && <th>Leave Status</th> }
+            {!showbtn && <th>Comment</th>}
+            {showbtn && <th>Leave Status</th>}
             {showbtn && <th>Action</th>}
-          
+
           </tr>
         </thead>
         <tbody>
           {tableData.map((data) => (
             <tr key={data.empId}>
-               { showbtn === false && <td>
+              {showbtn === false && <td>
                 <input type="checkbox"
                   checked={data.selected}
                   onChange={() => {
@@ -81,14 +84,17 @@ function TableComponent(props) {
                   }}
                 />
                 <label> </label>
-              </td> }
+              </td>}
+             {!showbtn? <td>{data.empId}</td>:""}
+             {!showbtn? <td>{data.empName}</td>:""}
               <td>{data.leaveType}</td>
               <td>{data.startDate}</td>
               <td>{data.endDate}</td>
+              {!showbtn? <td>{data.comments}</td>:""}
               {showbtn &&
                 <td>
                   <div>{data.status}</div>
-                  </td>}
+                </td>}
 
               {showbtn &&
                 <td>
@@ -97,6 +103,9 @@ function TableComponent(props) {
                     <button className='btn' onClick={() => submit(data)}>Cancel</button>
                   </div>
                 </td>}
+                {showbtn === false  && < button className='btn' >Approve</button>}
+            {showbtn === false  && <button className='btn'  >Reject</button>}
+           
 
 
             </tr>

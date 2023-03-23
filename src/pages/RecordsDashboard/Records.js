@@ -10,8 +10,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 import moment from 'moment';
 let tableData1 = []
 const tableData = [
-  { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request",'status':"approved" },
-  { "empId": 1012, "empName": "Ryan Sann", "startDate": "07-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request",'status':"applied" }
+  { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request", 'status': "approved" },
+  { "empId": 1012, "empName": "Ryan Sann", "startDate": "07-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request", 'status': "applied" }
 ]
 const loadedState = [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]
 
@@ -26,14 +26,22 @@ function Records(props) {
   const [SearchObj, setSearchObj] = useState({ "empId": '', "startDate": '', "endDate": '' })
   const [type, setType] = useState();
   let [responseData, setResponseData] = React.useState([]);
-  let [showTable, setShowTable] = useState(false)
+  let [showTable, setShowTable] = useState(true)
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
-  const [tableDatas, settableDatas] = useState([]);
+  const [tableDatas, settableDatas] = useState(tableData);
 
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
-    console.log("record useeffect[]" + type);
-
+    console.log("record useeffect[]" + pageView);
+    if (pageView == "Approver") {
+      settableDatas(tableData)
+      if (tableDatas.length) {
+        setShowTable(true)
+      }
+    }
+    else {
+      setShowTable(false)
+    }
     if (pageView) {
       setType(pageView)
     }
@@ -112,7 +120,8 @@ function Records(props) {
   }
 
   const fetchData = () => {
-    if ((!fromDate || !toDate ) && type==="employee") {
+
+    if ((!fromDate || !toDate) && type == "employee") {
       confirmAlert({
         message: 'Please select From Date and To Date.',
         buttons: [
@@ -120,9 +129,7 @@ function Records(props) {
             label: 'Ok',
           }]
       })
-    }
-
-    else {
+    } else {
       settableDatas(tableData)
       if (tableDatas.length) {
         setShowTable(true)
@@ -170,17 +177,26 @@ function Records(props) {
         <h2 className='h2T'>Leave Records</h2>
 
         <div className='main_container'>
+
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
-            <label>  Employee ID  </label>
-            <input
-              disabled={type === "employee" ? true : false}
-              name="empId"
-              type="text"
-              id="Id"
-              value={type === 'employee' ? '12345' : SearchObj.empId}
-              onChange={(e) => handleIdChange(e)}
-            />
+            {
+              type == "employee" ?
+                <>
+                  <label>  Employee ID  </label>
+                  <input
+                    disabled={type === "employee" ? true : false}
+                    name="empId"
+                    type="text"
+                    id="Id"
+                    value={type === 'employee' ? '12345' : SearchObj.empId}
+                    onChange={(e) => handleIdChange(e)}
+                  />
+                </>
+                : ""
+            }
           </div>
+
+
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
               <p style={{ marginRight: "5px" }}>From Date</p>
@@ -214,10 +230,10 @@ function Records(props) {
 
           {/* instead of show button add the flag which depends on search result len */}
           {showbtn === false && showTable && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
+            {/* <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <p>Comment</p>
               < textarea className='richtxt' id="w3review" name="w3review" rows="3" cols="50" onChange={(e) => onchangeComment(e)}></textarea>
-            </div>
+            </div> */}
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <p>Approver's Comment</p>
@@ -229,8 +245,8 @@ function Records(props) {
           <div style={{ marginTop: "2%" }}>
             {showbtn === true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {showbtn === false && < button className='btn_common' >Approve</button>}
-            {showbtn === false && <button className='btn_common'  >Reject</button>}
+            {/* {showbtn === false && tableDatas.length>0 && < button className='btn_common' >Approve</button>}
+            {showbtn === false && tableDatas.length>0 && <button className='btn_common'  >Reject</button>} */}
             <button className='btn_common' onClick={backToLogin}>Back</button>
           </div>
         </div>
