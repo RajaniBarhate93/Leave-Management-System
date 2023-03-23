@@ -52,9 +52,9 @@ function EditLEaveComponent(props) {
             console.log("data1..." + date1)
             var date2 = moment(editToDate).format('DD-mm-YYYY');
             console.log("data1..." + date2)
-            setstartDate({
+            setstartDate(
                 date1
-            });
+            );
             setEndDate({
                 date2
             });

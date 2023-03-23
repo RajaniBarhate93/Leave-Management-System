@@ -10,8 +10,8 @@ function TableComponent(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [tableData, setTableData] = useState(props.data);
   const [editData, setEditData] = useState('');
-  
-console.log("myte="+JSON.stringify(tableData))
+
+  console.log("myte=" + JSON.stringify(tableData))
   let showbtn
   props.userTypes === "employee" ? showbtn = true : showbtn = false
   const submit = (e) => {
@@ -68,14 +68,14 @@ console.log("myte="+JSON.stringify(tableData))
                     newData[index].selected = !newData[index].selected;
                     setTableData(newData);
                     console.log("newData==" + JSON.stringify(newData))
-                    var result = newData.find(function(e) {
+                    var result = newData.find(function (e) {
                       return e.selected == true;
                     });
-                    
+
                     console.log(result)
-                      sessionStorage.setItem('selectedRow', JSON.stringify(result));
-                      var obj =  sessionStorage.getItem('selectedRow');
-                   console.log("object==="+obj);
+                    sessionStorage.setItem('selectedRow', JSON.stringify(result));
+                    var obj = sessionStorage.getItem('selectedRow');
+                    console.log("object===" + obj);
 
                   }}
                 />
