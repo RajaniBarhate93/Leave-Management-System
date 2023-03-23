@@ -10,8 +10,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 import moment from 'moment';
 let tableData1 = []
 const tableData = [
-  { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" },
-  { "empId": 1012, "empName": "Ryan Sann", "startDate": "07-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request" }
+  { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request",'status':"approved" },
+  { "empId": 1012, "empName": "Ryan Sann", "startDate": "07-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request",'status':"applied" }
 ]
 const loadedState = [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]
 
@@ -112,7 +112,7 @@ function Records(props) {
   }
 
   const fetchData = () => {
-    if ((!fromDate || !toDate ) && type=="employee") {
+    if ((!fromDate || !toDate ) && type==="employee") {
       confirmAlert({
         message: 'Please select From Date and To Date.',
         buttons: [
@@ -173,11 +173,11 @@ function Records(props) {
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "2%" }}>
             <label>  Employee ID  </label>
             <input
-              disabled={type == "employee" ? true : false}
+              disabled={type === "employee" ? true : false}
               name="empId"
               type="text"
               id="Id"
-              value={type == 'employee' ? '12345' : SearchObj.empId}
+              value={type === 'employee' ? '12345' : SearchObj.empId}
               onChange={(e) => handleIdChange(e)}
             />
           </div>
@@ -227,11 +227,11 @@ function Records(props) {
           </div>
           }
           <div style={{ marginTop: "2%" }}>
-            {showbtn == true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
+            {showbtn === true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
             {showbtn === false && < button className='btn_common' >Approve</button>}
             {showbtn === false && <button className='btn_common'  >Reject</button>}
-            <button className='btn_common' onClick={backToLogin}>Cancel</button>
+            <button className='btn_common' onClick={backToLogin}>Back</button>
           </div>
         </div>
       </div>

@@ -48,18 +48,19 @@ function TableComponent(props) {
       <table>
         <thead>
           <tr>
-            <th style={{ width: "40px" }}></th>
+           { showbtn === false && <th style={{ width: "40px" }}></th>}
             <th>Leave Type</th>
             <th>From</th>
             <th>To</th>
+            {showbtn && <th>Leave Status</th> }
             {showbtn && <th>Action</th>}
-            {/* <th>Action</th> */}
+          
           </tr>
         </thead>
         <tbody>
           {tableData.map((data) => (
             <tr key={data.empId}>
-              <td>
+               { showbtn === false && <td>
                 <input type="checkbox"
                   checked={data.selected}
                   onChange={() => {
@@ -80,10 +81,14 @@ function TableComponent(props) {
                   }}
                 />
                 <label> </label>
-              </td>
+              </td> }
               <td>{data.leaveType}</td>
               <td>{data.startDate}</td>
               <td>{data.endDate}</td>
+              {showbtn &&
+                <td>
+                  <div>{data.status}</div>
+                  </td>}
 
               {showbtn &&
                 <td>
@@ -92,6 +97,7 @@ function TableComponent(props) {
                     <button className='btn' onClick={() => submit(data)}>Cancel</button>
                   </div>
                 </td>}
+
 
             </tr>
           ))}
