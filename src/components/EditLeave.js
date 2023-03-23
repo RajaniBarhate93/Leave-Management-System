@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { json } from 'react-router-dom';
 import "./table.css"
 import Modal from "react-modal";
@@ -15,84 +15,37 @@ const options = [
 ];
 
 function EditLEaveComponent(props) {
-    console.log(props)
     const navigate = useNavigate();
-    const [fromDate, setFromDate] = useState();
-    const [startDate, setstartDate] = useState();
-    const [endDate, setEndDate] = useState();
-    const [toDate, setToDate] = useState();
-    const [selectValues, setselectValues] = useState();
+    const [startDate, setStartDate] = useState(new Date(props.editData.startDate));
+    const [endDate, setEndDate] = useState(new Date(props.editData.endDate));
     const [leaveTypeId, setLeaveTypeId] = useState();
-    console.log(props.editData.leaveType)
-
-
-
-    const setValues = selectValues => setselectValues(selectValues);
     const applyHandler = () => {
-
         props.hideModal()
-    }
-    const cancelHandler = (e) => {
-        navigate("/records");
     }
     useEffect(() => {
         if (props.editData) {
             options.map((val, k) => {
                 if (val.name == props.editData.leaveType) {
-                    console.log(val)
                     setLeaveTypeId(val.id)
                 }
             })
-            let editStartDate = props.editData.startDate;
-            let editToDate = props.editData.endDate;
 
-            setFromDate(editStartDate)
-            setToDate(editToDate)
-            var date1 = moment(editStartDate).format('DD-mm-YYYY');
-            console.log("data1..." + date1)
-            var date2 = moment(editToDate).format('DD-mm-YYYY');
-            console.log("data1..." + date2)
-            setstartDate(
-                date1
-            );
-            setEndDate({
-                date2
-            });
         }
     }, [])
-    const handleChangeFrom = (date) => {
 
-        setstartDate(date);
-       
-    }
-    const handleChangeTo = (date) => {
-        setToDate(date)
-       
-    }
     return (
         <Modal isOpen={props.modalIsOpen} onHide={props.hideModal}>
             <div className="App">
-
                 <div className="container">
-
                     <h1 className='h2T'><u>Edit Leave</u></h1>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" }}>
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                             <p style={{ marginRight: "5px" }}>From Date</p>
-                            <DatePicker
-                                value={fromDate}
-                                selected={startDate}
-                                dateFormat="DD-mm-YYYY"
-                                onChange={(startDate) => setstartDate(startDate)}
-                            />  </div>
+                            <DatePicker onChange={setStartDate} value={startDate} />
+                        </div>
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "4%" }}>
                             <p style={{ marginRight: "5px" }}>  To Date</p>
-                            <DatePicker
-                                value={toDate}
-                                selected={endDate}
-                                dateFormat="DD-MM-YYYY"
-                                onChange={handleChangeTo}
-                            />
+                            <DatePicker onChange={setEndDate} value={endDate} />
                         </div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" }}>
