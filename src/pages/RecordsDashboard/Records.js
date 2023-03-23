@@ -109,7 +109,7 @@ function Records(props) {
   const fetchData=()=> { 
     if(tableData.length){   
       setShowTable(true)
-    }
+    }    
     axios({
       "method": "GET",
       "url": "http://localhost:9000/getLeave",
