@@ -112,7 +112,7 @@ function Records(props) {
   }
 
   const fetchData = () => {
-    if (!fromDate || !toDate) {
+    if ((!fromDate || !toDate ) && type=="employee") {
       confirmAlert({
         message: 'Please select From Date and To Date.',
         buttons: [
@@ -121,18 +121,8 @@ function Records(props) {
           }]
       })
     }
-    else if (type !== "employee" && empId == "") {
-     confirmAlert({
-        message: 'Please fill the Employee Id.',
-        buttons: [
-          {
-            label: 'Ok',
-          }]
-      })
-    }
+
     else {
-
-
       settableDatas(tableData)
       if (tableDatas.length) {
         setShowTable(true)
