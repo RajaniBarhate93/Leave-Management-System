@@ -103,12 +103,7 @@ function TableComponent(props) {
                     <button className='btn' onClick={() => submit(data)}>Cancel</button>
                   </div>
                 </td>}
-                {showbtn === false  && < button className='btn' >Approve</button>}
-            {showbtn === false  && <button className='btn'  >Reject</button>}
-           
-
-
-            </tr>
+               </tr>
           ))}
         </tbody>
       </table>
