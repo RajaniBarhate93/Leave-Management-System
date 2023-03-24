@@ -56,7 +56,7 @@ function TableComponent(props) {
             <th>To</th>
             {!showbtn && <th>Comment</th>}
             {showbtn && <th>Leave Status</th>}
-            {showbtn && <th>Action</th>}
+             <th>Action</th>
 
           </tr>
         </thead>
