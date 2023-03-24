@@ -158,8 +158,8 @@ function Records(props) {
     }
   }
   const resetData = () => {
-    settableDatas([])
-    setShowTable(false)
+    // settableDatas([])
+    // setShowTable(false)
     setFromDate()
     setToDate()
 
@@ -243,7 +243,7 @@ function Records(props) {
           </div>
           }
           <div style={{ marginTop: "2%" }}>
-            {showbtn === true && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
+            {showbtn === true && showTable && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
             {/* {showbtn === false && tableDatas.length>0 && < button className='btn_common' >Approve</button>}
             {showbtn === false && tableDatas.length>0 && <button className='btn_common'  >Reject</button>} */}
