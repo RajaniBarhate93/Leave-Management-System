@@ -197,7 +197,7 @@ function Records(props) {
           </div>
 
 
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" }}>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" ,marginLeft:type=="Approver"?"15%":""}}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
               <p style={{ marginRight: "5px" }}>From Date</p>
               <DatePicker
@@ -245,8 +245,8 @@ function Records(props) {
           <div style={{ marginTop: "2%" }}>
             {showbtn === true && showTable && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {/* {showbtn === false && tableDatas.length>0 && < button className='btn_common' >Approve</button>}
-            {showbtn === false && tableDatas.length>0 && <button className='btn_common'  >Reject</button>} */}
+            {showbtn === false && tableDatas.length>0 && < button className='btn_common' >Approve</button>}
+            {showbtn === false && tableDatas.length>0 && <button className='btn_common'  >Reject</button>}
             <button className='btn_common' onClick={backToLogin}>Back</button>
           </div>
         </div>

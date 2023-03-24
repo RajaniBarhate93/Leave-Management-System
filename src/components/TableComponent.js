@@ -56,7 +56,7 @@ function TableComponent(props) {
             <th>To</th>
             {!showbtn && <th>Comment</th>}
             {showbtn && <th>Leave Status</th>}
-             <th>Action</th>
+            
 
           </tr>
         </thead>
@@ -103,12 +103,7 @@ function TableComponent(props) {
                     <button className='btn' onClick={() => submit(data)}>Cancel</button>
                   </div>
                 </td>}
-                {showbtn === false  && < button className='btn' >Approve</button>}
-            {showbtn === false  && <button className='btn'  >Reject</button>}
-           
-
-
-            </tr>
+               </tr>
           ))}
         </tbody>
       </table>
