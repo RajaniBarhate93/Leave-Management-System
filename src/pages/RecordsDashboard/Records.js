@@ -29,7 +29,7 @@ function Records(props) {
   let [showTable, setShowTable] = useState(true)
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
   const [tableDatas, settableDatas] = useState(tableData);
-
+console.log(props)
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
     console.log("record useeffect[]" + pageView);
@@ -119,9 +119,10 @@ function Records(props) {
 
   }
 
-  const fetchData = () => {
-
-    if ((!fromDate || !toDate) && type == "employee") {
+  const fetchData = (e) => {
+    console.log("dfvdf")
+    e.preventDefault()
+    if ((!fromDate || !toDate)) {
       confirmAlert({
         message: 'Please select From Date and To Date.',
         buttons: [
@@ -129,7 +130,17 @@ function Records(props) {
             label: 'Ok',
           }]
       })
-    } else {
+    } else if (fromDate > toDate) {
+      confirmAlert({
+        message: 'From Date cannot be greater then To Date!',
+        buttons: [
+          {
+            label: 'Ok',
+          }]
+      })
+    }
+
+    else {
       settableDatas(tableData)
       if (tableDatas.length) {
         setShowTable(true)
@@ -197,7 +208,7 @@ function Records(props) {
           </div>
 
 
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%" ,marginLeft:type=="Approver"?"15%":""}}>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "1%", marginLeft: type == "Approver" ? "15%" : "" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
               <p style={{ marginRight: "5px" }}>From Date</p>
               <DatePicker
@@ -219,7 +230,7 @@ function Records(props) {
           </div>
           <div style={{ marginTop: "2%", marginBottom: "2%" }}>
             {/* <button className='btn_common' onClick={searchhandler}>Search</button> */}
-            <button className='btn_common' onClick={fetchData}>Search</button>
+            <button className='btn_common' onClick={(e) => fetchData(e)}>Search</button>
             <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
           {/* render conditionally */}
@@ -245,8 +256,8 @@ function Records(props) {
           <div style={{ marginTop: "2%" }}>
             {showbtn === true && showTable && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {showbtn === false && tableDatas.length>0 && < button className='btn_common' >Approve</button>}
-            {showbtn === false && tableDatas.length>0 && <button className='btn_common'  >Reject</button>}
+            {showbtn === false  && tableDatas.length > 0 && < button className='btn_common' >Approve</button>}
+            {showbtn === false && tableDatas.length > 0 && <button className='btn_common'  >Reject</button>}
             <button className='btn_common' onClick={backToLogin}>Back</button>
           </div>
         </div>

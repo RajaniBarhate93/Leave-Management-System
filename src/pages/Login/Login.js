@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 //import basestyle from "../Base.module.css";
 import "./Login.css";
-//import axios from "axios";
+import axios from "axios";
 import ReactSwitch from 'react-switch';
 import { useNavigate, NavLink } from "react-router-dom"
 
@@ -18,21 +18,40 @@ const Login = ({ setUserState }) => {
   const [type, setType] = useState("employee");
   useEffect(() => {
     console.log(type);
-    sessionStorage.setItem("type",type);    
-  var pageView = sessionStorage.getItem("type");
-  }, [type,checked]);
+    sessionStorage.setItem("type", type);
+    var pageView = sessionStorage.getItem("type");
+  }, [type, checked]);
 
-
+const tempData= 
+{
+  "empId": 1012,
+  "lstLeaveDetails": [
+    {
+      "id": 1,
+      "empId": 1011,
+      "empName": "Ryan Sann",
+      "startDate": "23-03-2023",
+      "endDate": "24-03-2023",
+      "leaveType": {
+        "id": 1,
+        "name": "Privilege Leave"
+      },
+      "leaveStatus": "APPLIED",
+      "comments": "please approve request",
+      "approverComments": null
+    }
+  ]
+}
 
   const handleChangeToggle = val => {
-      setChecked(val)
-      if(val){
-        setType("employee")
-      }else if(val==false){
-          setType("Approver")
-        }
-        // if(val ? setType("employee"): setType("Approver"));
-  
+    setChecked(val)
+    if (val) {
+      setType("employee")
+    } else if (val == false) {
+      setType("Approver")
+    }
+    // if(val ? setType("employee"): setType("Approver"));
+
   }
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -61,15 +80,52 @@ const Login = ({ setUserState }) => {
   }
   const loginHandler = (e) => {
     e.preventDefault();
-    setFormErrors(validateForm(user));
+    // setFormErrors(validateForm(user));
     setIsSubmit(true);
-    if (!formErrors) {
-      alert("Please try again.....")
+    // if (!formErrors) {
+    //   alert("Please try again.....")
+    // }
+    //if (isSubmit) {
+    //call login api
+    let userDetail = user
+    let userT = ""
+
+    if (type === "Approver") {
+      userT = "A"
     }
-    if(isSubmit){
-      navigate("/records",{state:{userType:type}});
-       
+    else {
+      userT = "E"
     }
+
+    let request = {
+      "username": userDetail.email,
+      "userType": userT,
+      "password": userDetail.password
+    }
+    axios({
+      "method": "GET",
+      "url": "http://localhost:9000/login",
+      "headers": {
+        "content-type": "application/octet-stream",
+        // "x-rapidapi-host": "quotes15.p.rapidapi.com",
+        // "x-rapidapi-key": process.env.REACT_APP_API_KEY
+      }, "params": {
+        respose: request
+      }
+    })
+      .then((response) => {
+        if (response) {
+          // alert(true)
+          //navigate("/records", { state: { userType: type,response:response } });
+          
+          navigate("/records", { state: { userType: type,response:tempData } });
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        navigate("/records", { state: { userType: type,response:tempData } });
+      })
+
   };
 
   return (
@@ -98,12 +154,12 @@ const Login = ({ setUserState }) => {
         />
         <p className="error">{formErrors.password}</p>
         <div>
-       {checked ? <span>Login with Employee</span>: <span>Login with  Approver</span>}
-       </div>
-      <ReactSwitch
-        checked={checked}
-        onChange={handleChangeToggle}
-      />
+          {checked ? <span>Login with Employee</span> : <span>Login with  Approver</span>}
+        </div>
+        <ReactSwitch
+          checked={checked}
+          onChange={handleChangeToggle}
+        />
         <div className='btn_container'>
           <button className="button_common" onClick={loginHandler}>
             Login
