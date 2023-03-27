@@ -59,7 +59,7 @@ function TableComponent(props) {
           </tr>
         </thead>
         <tbody>
-          {tableData && tableData.length > 0 && tableData.map((data, k) => {
+          {tableData && tableData.length > 0 && props.data.map((data, k) => {
             return (
               <tr key={k}>
                 {showbtn === false && <td>

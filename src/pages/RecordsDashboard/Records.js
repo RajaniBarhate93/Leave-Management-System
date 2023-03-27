@@ -28,15 +28,16 @@ function Records(props) {
   let [responseData, setResponseData] = React.useState([]);
   let [showTable, setShowTable] = useState(true)
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
-  const [tableDatas, settableDatas] = useState([]);
+  const [tableDatas, settableDatas] = useState(location.state.response.lstLeaveDetails);
   let userDetails = location.state
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
     console.log("record useeffect[]" + pageView);
-
+   // console.log(userDetails)
     if (userDetails && userDetails.response && userDetails.response.lstLeaveDetails.length > 0) {
       if (pageView == "Approver") {
         settableDatas((userDetails.response.lstLeaveDetails))
+        console.log(userDetails.response.lstLeaveDetails)
         setShowTable(true)
       }
       else {
@@ -244,6 +245,8 @@ function Records(props) {
             <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
           {/* render conditionally */}
+          
+
           {showTable && <TableComponent data={tableDatas} userTypes={type} />}
 
 
