@@ -16,8 +16,14 @@ const options = [
 
 function EditLEaveComponent(props) {
     const navigate = useNavigate();
-    const [startDate, setStartDate] = useState(new Date(props.editData.startDate));
-    const [endDate, setEndDate] = useState(new Date(props.editData.endDate));
+    let eDate = props.editData.endDate
+    var eDateArray = eDate.split("-");
+    var newEdate = eDateArray[1] + '/' + eDateArray[0] + '/' + eDateArray[2];
+    let sDate = props.editData.startDate
+    var sDateArray = sDate.split("-");
+    var newSdate = sDateArray[1] + '/' + sDateArray[0] + '/' + sDateArray[2];
+    const [startDate, setStartDate] = useState(new Date(newSdate));
+    const [endDate, setEndDate] = useState(new Date(newEdate));
     const [leaveTypeId, setLeaveTypeId] = useState();
     const applyHandler = () => {
         props.hideModal()
@@ -25,7 +31,7 @@ function EditLEaveComponent(props) {
     useEffect(() => {
         if (props.editData) {
             options.map((val, k) => {
-                if (val.name == props.editData.leaveType) {
+                if (val.name == props.editData.leaveType.name) {
                     setLeaveTypeId(val.id)
                 }
             })
@@ -53,7 +59,7 @@ function EditLEaveComponent(props) {
 
                         {
                             leaveTypeId ?
-                                <select id="select" defaultValue={options[leaveTypeId].id - 1} style={{ "backgroundColor": "#F2CC8F" }}>
+                                <select id="select" defaultValue={options[leaveTypeId]} style={{ "backgroundColor": "#F2CC8F" }}>
                                     {
                                         options.map((val, k) => {
                                             return (
