@@ -13,10 +13,10 @@ const tableData = [
   { "empId": 1011, "empName": "Ryan Sann", "startDate": "05-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request", 'status': "approved" },
   { "empId": 1012, "empName": "Ryan Sann", "startDate": "07-02-2023", "endDate": "10-02-2023", "leaveType": "Sick Leave", "comments": "please approve request", 'status': "applied" }
 ]
-const loadedState = [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]
 
 function Records(props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [empName, setEmpName] = useState();
   const [empId, setempId] = useState();
   const [fromDate, setFromDate] = useState();
@@ -28,20 +28,23 @@ function Records(props) {
   let [responseData, setResponseData] = React.useState([]);
   let [showTable, setShowTable] = useState(true)
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
-  const [tableDatas, settableDatas] = useState(tableData);
-console.log(props)
+  const [tableDatas, settableDatas] = useState(location.state.response.lstLeaveDetails);
+  let userDetails = location.state
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
     console.log("record useeffect[]" + pageView);
-    if (pageView == "Approver") {
-      settableDatas(tableData)
-      if (tableDatas.length) {
+   // console.log(userDetails)
+    if (userDetails && userDetails.response && userDetails.response.lstLeaveDetails.length > 0) {
+      if (pageView == "Approver") {
+        settableDatas((userDetails.response.lstLeaveDetails))
+        console.log(userDetails.response.lstLeaveDetails)
         setShowTable(true)
       }
+      else {
+        setShowTable(false)
+      }
     }
-    else {
-      setShowTable(false)
-    }
+
     if (pageView) {
       setType(pageView)
     }
@@ -141,31 +144,39 @@ console.log(props)
     }
 
     else {
-      settableDatas(tableData)
-      if (tableDatas.length) {
+      if (userDetails && userDetails.response && userDetails.response.lstLeaveDetails.length > 0) {
+        settableDatas(userDetails.response.lstLeaveDetails)
         setShowTable(true)
+
       }
-      axios({
-        "method": "GET",
-        "url": "http://localhost:9000/getLeave",
-        "headers": {
-          "content-type": "application/octet-stream",
-          // "x-rapidapi-host": "quotes15.p.rapidapi.com",
-          // "x-rapidapi-key": process.env.REACT_APP_API_KEY
-        }, "params": {
-          SearchObj: SearchObj
-        }
-      })
-        .then((response) => {
-          setResponseData(response.data)
-          if (response.data.length) {
-            alert(true)
-            setShowTable(true)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      else {
+        setShowTable(false)
+      }
+
+      // if (tableDatas.length) {
+      //   setShowTable(true)
+      // }
+      // axios({
+      //   "method": "GET",
+      //   "url": "http://localhost:9000/getLeave",
+      //   "headers": {
+      //     "content-type": "application/octet-stream",
+      //     "x-rapidapi-host": "quotes15.p.rapidapi.com",
+      //     "x-rapidapi-key": process.env.REACT_APP_API_KEY
+      //   }, "params": {
+      //     SearchObj: SearchObj
+      //   }
+      // })
+      //   .then((response) => {
+      //     setResponseData(response.data)
+      //     if (response.data.length) {
+      //       alert(true)
+      //       setShowTable(true)
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //   })
     }
   }
   const resetData = () => {
@@ -195,11 +206,11 @@ console.log(props)
                 <>
                   <label>  Employee ID  </label>
                   <input
-                    disabled={type === "employee" ? true : false}
+                    disabled
                     name="empId"
                     type="text"
                     id="Id"
-                    value={type === 'employee' ? '12345' : SearchObj.empId}
+                    value={userDetails.response.empId}
                     onChange={(e) => handleIdChange(e)}
                   />
                 </>
@@ -234,7 +245,7 @@ console.log(props)
             <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
           {/* render conditionally */}
-
+          
 
           {showTable && <TableComponent data={tableDatas} userTypes={type} />}
 
@@ -256,7 +267,7 @@ console.log(props)
           <div style={{ marginTop: "2%" }}>
             {showbtn === true && showTable && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {showbtn === false  && tableDatas.length > 0 && < button className='btn_common' >Approve</button>}
+            {showbtn === false && tableDatas.length > 0 && < button className='btn_common' >Approve</button>}
             {showbtn === false && tableDatas.length > 0 && <button className='btn_common'  >Reject</button>}
             <button className='btn_common' onClick={backToLogin}>Back</button>
           </div>
