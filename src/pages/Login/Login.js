@@ -91,7 +91,7 @@ const tempData=
       "password": userDetail.password
     }
     let url="http://localhost:9000/login"
-    
+    var apiResponse=[]
     axios({
       method: 'post',
       url: "http://localhost:9000/login",
@@ -104,15 +104,13 @@ const tempData=
 				password: userDetail.password
 			}
     })
-      .then((response) => {
-      
-        if (response.data) {
-     //  console.log(  console.log("response==="+JSON.stringify(response.data)))
+      .then((response) => {      
+        if (response.data) {    
        sessionStorage.setItem("empID", response.data.empId);
        if(response.data.lstLeaveDetails){
-        sessionStorage.setItem("lstLeaveDetails", JSON.stringify(response.data));
+        sessionStorage.setItem("lstLeaveDetails", JSON.stringify(response.data));        
        }
-          navigate("/records", { state: { userType: type,response:tempData } });
+                 navigate("/records", { state: { userType: type  } });
         }
       })
       .catch((error) => {
