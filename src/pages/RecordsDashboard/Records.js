@@ -15,10 +15,12 @@ const tableData = [
 ]
 
 function Records(props) {
+  var getEmpId = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
+  console.log(getEmpId.empId)
   const navigate = useNavigate();
   const location = useLocation();
   const [empName, setEmpName] = useState();
-  const [empId, setempId] = useState();
+  const [empId, setempId] = useState(getEmpId.empId);
   const [fromDate, setFromDate] = useState();
   const [startDate, setstartDate] = useState();
   const [toDate, setToDate] = useState();
@@ -34,7 +36,8 @@ function Records(props) {
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
     var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
-    console.log("records===" + tabledataApprovar.lstLeaveDetails.length);  
+    console.log("records===" + tabledataApprovar);  
+    
     if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {
       if (pageView == "Approver") {       
       settableDatas((tabledataApprovar.lstLeaveDetails))
@@ -44,7 +47,6 @@ function Records(props) {
         setShowTable(false)
       }
     }
-
     if (pageView) {
       setType(pageView)
     }
@@ -113,8 +115,7 @@ function Records(props) {
 
   }
 
-  const fetchData = (e) => {
-    console.log("dfvdf")
+  const fetchData = (e) => {  
     e.preventDefault()
     if ((!fromDate || !toDate)) {
       confirmAlert({
@@ -134,22 +135,45 @@ function Records(props) {
       })
     }
 
-    else {
-      
+    else {      
       var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
-      console.log("records===" + tabledataApprovar.lstLeaveDetails.length);  
-      if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {     
-        settableDatas((tabledataApprovar.lstLeaveDetails))
-        setShowTable(true)
+      console.log("records===" + JSON.stringify(SearchObj));  
+      let empType=type==='Approver'?'getApproverLeave':'getEmployeeLeave';
+      
+      axios({
+        method: 'post',
+        url: "http://localhost:9000/"+empType,
+        headers: {
+          'Content-Type': 'application/json'         
+                 }, 
+         data: {
+          "empId":empId,
+          "startDate": SearchObj.startDate,
+			     "endDate": SearchObj.endDate
+         }
+      })
+        .then((response) => {
+        console.log(response)
+          if (response.data) {     
+            settableDatas(response.data);
+            setShowTable(true);         
+          }
+        })
+        .catch((error) => {
+          console.log(error)     
+        })
 
-      }
-      else {
-        setShowTable(false)
+    //   if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {   
+    //     settableDatas((tabledataApprovar.lstLeaveDetails))
+    //     setShowTable(true)
+    //   }
+    //   else {
+    //     setShowTable(false)
+    //   }     
       }
 
-     
-    }
   }
+
   const resetData = () => {  
     setFromDate()
     setToDate()
