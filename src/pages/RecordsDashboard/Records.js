@@ -15,6 +15,8 @@ const tableData = [
 ]
 
 function Records(props) {
+  var pageView = sessionStorage.getItem("type");
+  var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
   var getEmpId = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
   console.log(getEmpId.empId)
   const navigate = useNavigate();
@@ -30,17 +32,14 @@ function Records(props) {
   let [responseData, setResponseData] = React.useState([]);
   let [showTable, setShowTable] = useState(true)
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
-  const [tableDatas, settableDatas] = useState(location.state.response.lstLeaveDetails);
+  const [tableDatas, settableDatas] = useState(tabledataApprovar.lstLeaveDetails);
   let userDetails = location.state
 
-  useEffect(() => {
-    var pageView = sessionStorage.getItem("type");
-    var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
-    console.log("records===" + tabledataApprovar);  
-    
-    if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {
-      if (pageView == "Approver") {       
-      settableDatas((tabledataApprovar.lstLeaveDetails))
+  useEffect(() => {  
+    console.log("records===" + JSON.stringify(tabledataApprovar));  
+    if (tabledataApprovar && tabledataApprovar.lstLeaveDetails) {
+      settableDatas(tabledataApprovar.lstLeaveDetails)
+         if (pageView === "Approver") {            
         setShowTable(true)
       }
       else {
@@ -152,9 +151,9 @@ function Records(props) {
 			     "endDate": SearchObj.endDate
          }
       })
-        .then((response) => {
-        console.log(response)
-          if (response.data) {     
+        .then((response) => {       
+          if (response.data) {  
+            console.log(response)
             settableDatas(response.data);
             setShowTable(true);         
           }
@@ -201,7 +200,7 @@ function Records(props) {
                     name="empId"
                     type="text"
                     id="Id"
-                    value={userDetails.response.empId}
+                    value={empId}
                     onChange={(e) => handleIdChange(e)}
                   />
                 </>
@@ -236,7 +235,7 @@ function Records(props) {
             <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
         
-
+{console.log("Tabledata=="+tableDatas)}
           {showTable && <TableComponent data={tableDatas} userTypes={type} />}
 
           {/* instead of show button add the flag which depends on search result len */}
