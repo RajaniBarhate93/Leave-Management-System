@@ -25,6 +25,15 @@ function Button() {
     })
   }, [])
 
+  axios({
+    method: 'post',
+    url: "baseUrl" + 'applications/' + "appName" + '/dataexport/plantypes' + "plan",
+    headers: {}, 
+    data: {
+      foo: 'bar', // This is the body part
+    }
+  });
+
   React.useEffect(() => {
     fetchData()
   }, [fetchData])

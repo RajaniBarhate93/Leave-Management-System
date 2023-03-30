@@ -30,14 +30,14 @@ function Records(props) {
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
   const [tableDatas, settableDatas] = useState(location.state.response.lstLeaveDetails);
   let userDetails = location.state
+
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
-    console.log("record useeffect[]" + pageView);
-   // console.log(userDetails)
-    if (userDetails && userDetails.response && userDetails.response.lstLeaveDetails.length > 0) {
-      if (pageView == "Approver") {
-        settableDatas((userDetails.response.lstLeaveDetails))
-        console.log(userDetails.response.lstLeaveDetails)
+    var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
+    console.log("records===" + tabledataApprovar.lstLeaveDetails.length);  
+    if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {
+      if (pageView == "Approver") {       
+      settableDatas((tabledataApprovar.lstLeaveDetails))
         setShowTable(true)
       }
       else {
@@ -50,13 +50,7 @@ function Records(props) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   settableDatas([...tableData]);
-  //   const timer = setTimeout(() => {
-  //     settableDatas([...tableData]);
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // }, [])
+  
 
   let showbtn = null
   type === "employee" ? showbtn = true : showbtn = false;
@@ -101,10 +95,7 @@ function Records(props) {
 
   const onchangeComment = (event) => {
     event.preventDefault();
-    //   setApplyObj({
-    //    ...ApplObj,
-    //    comments: event.target.value
-    //  });    
+    
   }
 
   const searchhandler = (event) => {
@@ -144,8 +135,11 @@ function Records(props) {
     }
 
     else {
-      if (userDetails && userDetails.response && userDetails.response.lstLeaveDetails.length > 0) {
-        settableDatas(userDetails.response.lstLeaveDetails)
+      
+      var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
+      console.log("records===" + tabledataApprovar.lstLeaveDetails.length);  
+      if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {     
+        settableDatas((tabledataApprovar.lstLeaveDetails))
         setShowTable(true)
 
       }
@@ -153,42 +147,15 @@ function Records(props) {
         setShowTable(false)
       }
 
-      // if (tableDatas.length) {
-      //   setShowTable(true)
-      // }
-      // axios({
-      //   "method": "GET",
-      //   "url": "http://localhost:9000/getLeave",
-      //   "headers": {
-      //     "content-type": "application/octet-stream",
-      //     "x-rapidapi-host": "quotes15.p.rapidapi.com",
-      //     "x-rapidapi-key": process.env.REACT_APP_API_KEY
-      //   }, "params": {
-      //     SearchObj: SearchObj
-      //   }
-      // })
-      //   .then((response) => {
-      //     setResponseData(response.data)
-      //     if (response.data.length) {
-      //       alert(true)
-      //       setShowTable(true)
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error)
-      //   })
+     
     }
   }
-  const resetData = () => {
-    // settableDatas([])
-    // setShowTable(false)
+  const resetData = () => {  
     setFromDate()
     setToDate()
 
   }
-  // React.useEffect(() => {
-  //   fetchData()
-  // }, [])
+  
 
 
   return (
@@ -244,11 +211,9 @@ function Records(props) {
             <button className='btn_common' onClick={(e) => fetchData(e)}>Search</button>
             <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
-          {/* render conditionally */}
-          
+        
 
           {showTable && <TableComponent data={tableDatas} userTypes={type} />}
-
 
           {/* instead of show button add the flag which depends on search result len */}
           {showbtn === false && showTable && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>

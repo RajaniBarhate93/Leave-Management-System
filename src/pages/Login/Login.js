@@ -60,19 +60,7 @@ const tempData=
       [name]: value,
     });
   };
-  const validateForm = (values) => {
-    const error = {};
-    const regex = /^[^\s+@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.email) {
-      error.email = "Email is required";
-    } else if (!regex.test(values.email)) {
-      error.email = "Please enter a valid email address";
-    }
-    if (!values.password) {
-      error.password = "Password is required";
-    }
-    return error;
-  };
+ 
   const cancelHandler = (e) => {
     navigate("/")
 
@@ -93,7 +81,7 @@ const tempData=
     if (type === "Approver") {
       userT = "A"
     }
-    else {
+    else if (type === "employee") {
       userT = "E"
     }
 
@@ -102,31 +90,36 @@ const tempData=
       "userType": userT,
       "password": userDetail.password
     }
+    let url="http://localhost:9000/login"
+    
     axios({
-      "method": "GET",
-      "url": "http://localhost:9000/login",
-      "headers": {
-        "content-type": "application/octet-stream",
-        // "x-rapidapi-host": "quotes15.p.rapidapi.com",
-        // "x-rapidapi-key": process.env.REACT_APP_API_KEY
-      }, "params": {
-        respose: request
-      }
+      method: 'post',
+      url: "http://localhost:9000/login",
+      headers: {
+        'Content-Type': 'application/json'         
+               }, 
+       data: {
+				username: userDetail.email,
+				userType: userT,
+				password: userDetail.password
+			}
     })
       .then((response) => {
-        if (response) {
-          // alert(true)
-          //navigate("/records", { state: { userType: type,response:response } });
-          
+      
+        if (response.data) {
+     //  console.log(  console.log("response==="+JSON.stringify(response.data)))
+       sessionStorage.setItem("empID", response.data.empId);
+       if(response.data.lstLeaveDetails){
+        sessionStorage.setItem("lstLeaveDetails", JSON.stringify(response.data));
+       }
           navigate("/records", { state: { userType: type,response:tempData } });
         }
       })
       .catch((error) => {
         console.log(error)
-        navigate("/records", { state: { userType: type,response:tempData } });
+     //   navigate("/records", { state: { userType: type,response:tempData } });
       })
-
-  };
+     };
 
   return (
 
