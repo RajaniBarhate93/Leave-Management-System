@@ -67,7 +67,8 @@ const tempData=
 
   }
   const loginHandler = (e) => {
-    e.preventDefault();   
+    e.preventDefault();
+    // setFormErrors(validateForm(user));
     setIsSubmit(true);
     // if (!formErrors) {
     //   alert("Please try again.....")
@@ -106,17 +107,17 @@ const tempData=
       .then((response) => {
       
         if (response.data) {
-    
+     //  console.log(  console.log("response==="+JSON.stringify(response.data)))
        sessionStorage.setItem("empID", response.data.empId);
        if(response.data.lstLeaveDetails){
         sessionStorage.setItem("lstLeaveDetails", JSON.stringify(response.data));
        }
-          navigate("/records", { state: { userType: type,response:tempData  } });
+          navigate("/records", { state: { userType: type,response:tempData } });
         }
       })
       .catch((error) => {
         console.log(error)
-   
+     //   navigate("/records", { state: { userType: type,response:tempData } });
       })
      };
 

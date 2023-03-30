@@ -29,6 +29,7 @@ function Records(props) {
   const [type, setType] = useState();
   let [responseData, setResponseData] = React.useState([]);
   let [showTable, setShowTable] = useState(true)
+  const [list, setList] = useState([]);
   //const [tableDatas, settableDatas] = useState([{"empId":"","empName":"","startDate":"", "endDate":"","leaveType":"","comments":""}]);
   const [tableDatas, settableDatas] = useState(location.state.response.lstLeaveDetails);
   let userDetails = location.state
@@ -36,11 +37,11 @@ function Records(props) {
   useEffect(() => {
     var pageView = sessionStorage.getItem("type");
     var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
-    console.log("records===" + tabledataApprovar);  
-    
+    console.log("records===" + tabledataApprovar);
+
     if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {
-      if (pageView == "Approver") {       
-      settableDatas((tabledataApprovar.lstLeaveDetails))
+      if (pageView == "Approver") {
+        settableDatas((tabledataApprovar.lstLeaveDetails))
         setShowTable(true)
       }
       else {
@@ -52,7 +53,7 @@ function Records(props) {
     }
   }, []);
 
-  
+
 
   let showbtn = null
   type === "employee" ? showbtn = true : showbtn = false;
@@ -97,7 +98,7 @@ function Records(props) {
 
   const onchangeComment = (event) => {
     event.preventDefault();
-    
+
   }
 
   const searchhandler = (event) => {
@@ -115,7 +116,7 @@ function Records(props) {
 
   }
 
-  const fetchData = (e) => {  
+  const fetchData = (e) => {
     e.preventDefault()
     if ((!fromDate || !toDate)) {
       confirmAlert({
@@ -135,51 +136,73 @@ function Records(props) {
       })
     }
 
-    else {      
+    else {
       var tabledataApprovar = JSON.parse(sessionStorage.getItem("lstLeaveDetails"));
-      console.log("records===" + JSON.stringify(SearchObj));  
-      let empType=type==='Approver'?'getApproverLeave':'getEmployeeLeave';
-      
+      console.log("records===" + JSON.stringify(SearchObj));
+      let empType = type === 'Approver' ? 'getApproverLeave' : 'getEmployeeLeave';
+
       axios({
         method: 'post',
-        url: "http://localhost:9000/"+empType,
+        url: "http://localhost:9000/" + empType,
         headers: {
-          'Content-Type': 'application/json'         
-                 }, 
-         data: {
-          "empId":empId,
+          'Content-Type': 'application/json'
+        },
+        data: {
+          "empId": empId,
           "startDate": SearchObj.startDate,
-			     "endDate": SearchObj.endDate
-         }
+          "endDate": SearchObj.endDate
+        }
       })
         .then((response) => {
-        console.log(response)
-          if (response.data) {     
+          console.log(response)
+          if (response.data) {
             settableDatas(response.data);
-            setShowTable(true);         
+            setShowTable(true);
           }
         })
         .catch((error) => {
-          console.log(error)     
+          console.log(error)
         })
 
-    //   if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {   
-    //     settableDatas((tabledataApprovar.lstLeaveDetails))
-    //     setShowTable(true)
-    //   }
-    //   else {
-    //     setShowTable(false)
-    //   }     
-      }
+      //   if (tabledataApprovar && tabledataApprovar.lstLeaveDetails && tabledataApprovar.lstLeaveDetails.length > 0) {   
+      //     settableDatas((tabledataApprovar.lstLeaveDetails))
+      //     setShowTable(true)
+      //   }
+      //   else {
+      //     setShowTable(false)
+      //   }     
+    }
 
   }
 
-  const resetData = () => {  
+  const resetData = () => {
     setFromDate()
     setToDate()
 
   }
-  
+  const onSelectLeave = (data) => {
+    console.log(data)
+    setList(data)
+  }
+  const approve_reject = () => {
+    axios({
+      method: 'patch',
+      url: "http://localhost:9000/updateEmployeeLeave",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data
+    })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  const reject = () => {
+
+  }
 
 
   return (
@@ -235,9 +258,9 @@ function Records(props) {
             <button className='btn_common' onClick={(e) => fetchData(e)}>Search</button>
             <button className='btn_common' onClick={resetData}>Reset</button>
           </div>
-        
 
-          {showTable && <TableComponent data={tableDatas} userTypes={type} />}
+
+          {showTable && <TableComponent data={tableDatas} userTypes={type} onSelectLeave={onSelectLeave} />}
 
           {/* instead of show button add the flag which depends on search result len */}
           {showbtn === false && showTable && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
@@ -256,8 +279,8 @@ function Records(props) {
           <div style={{ marginTop: "2%" }}>
             {showbtn === true && showTable && <button className='btn_commonbtm' onClick={handleSubmit}>Apply Leave</button>}
             {/* {showbtn === false && <button className='btn_commonbtm' onClick={handleApproveRej}>Approve/Reject</button>} */}
-            {showbtn === false && tableDatas.length > 0 && < button className='btn_common' >Approve</button>}
-            {showbtn === false && tableDatas.length > 0 && <button className='btn_common'  >Reject</button>}
+            {showbtn === false && tableDatas.length > 0 && < button className='btn_common' onClick={approve_reject}>Approve</button>}
+            {showbtn === false && tableDatas.length > 0 && <button className='btn_common' onClick={approve_reject}>Reject</button>}
             <button className='btn_common' onClick={backToLogin}>Back</button>
           </div>
         </div>
