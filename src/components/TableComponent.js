@@ -98,8 +98,13 @@ function TableComponent(props) {
                 {showbtn &&
                   <td>
                     <div>
-                      <button className='btn' onClick={() => action(data)}>Edit</button>
-                      <button className='btn' onClick={() => submit(data)}>Cancel</button>
+                      {
+                        data.leaveStatus=="Rejected"?
+                        <button className='btn' onClick={() => action(data)}>Edit</button>
+                        :""
+                      }
+                     
+                      {/* <button className='btn' onClick={() => submit(data)}>Cancel</button> */}
                     </div>
                   </td>}
               </tr>
