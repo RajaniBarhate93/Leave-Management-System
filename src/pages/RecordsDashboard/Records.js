@@ -190,7 +190,7 @@ function Records(props) {
       headers: {
         'Content-Type': 'application/json'
       },
-      data: data
+      data: list
     })
       .then((response) => {
         console.log(response)
@@ -255,7 +255,7 @@ function Records(props) {
           </div>
 
           {console.log("Tabledata==" + tableDatas)}
-          {showTable && <TableComponent data={tableDatas} userTypes={type} />}
+          {showTable && <TableComponent data={tableDatas} userTypes={type} onSelectLeave={onSelectLeave}/>}
 
           {/* instead of show button add the flag which depends on search result len */}
           {showbtn === false && showTable && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2%" }}>
