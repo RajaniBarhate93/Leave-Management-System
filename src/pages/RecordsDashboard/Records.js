@@ -87,6 +87,13 @@ function Records(props) {
       empId: event.target.value
     });
   }
+  const ApproverComment = (event) => {
+    console.log(event)
+    setSearchObj({
+      ...SearchObj,
+      approverComments: event.target.value
+    });
+  }
 
   const handleSubmit = (event) => {
     navigate("/dashboard");
@@ -186,7 +193,7 @@ function Records(props) {
   const approve_reject = () => {
     axios({
       method: 'patch',
-      url: "http://localhost:9000/updateEmployeeLeave",
+      url: "http://localhost:9000/updateApproverLeave",
       headers: {
         'Content-Type': 'application/json'
       },
@@ -266,7 +273,8 @@ function Records(props) {
 
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%" }}>
               <p>Approver's Comment</p>
-              < textarea className='richtxtcmt' id="w3review" name="w3review" rows="3" cols="50"></textarea>
+              < textarea className='richtxtcmt' 
+              onChange={(e)=>ApproverComment(e)}  id="w3review" name="w3review" rows="3" cols="50"></textarea>
             </div>
 
           </div>
